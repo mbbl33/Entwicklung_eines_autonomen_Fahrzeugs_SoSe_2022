@@ -1,0 +1,3 @@
+[submodule "ros"]
+	path = ros
+	url = git@git.thm.de:autonomes-fahren/sommersemester-2022/ros.git
