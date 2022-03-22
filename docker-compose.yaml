@@ -11,3 +11,6 @@ services:
     volumes:
       - ./ros:/home/user/ros
     privileged: true
+    environment:
+      - DISPLAY=$DISPLAY
+      - QT_X11_NO_MITSHM=1
