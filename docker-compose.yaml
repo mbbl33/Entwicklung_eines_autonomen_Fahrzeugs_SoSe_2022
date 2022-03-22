@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  ros:
+    build:
+      context: ./
+      dockerfile: ros.Dockerfile
+    network_mode: host
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./ros:/home/user/ros
+    privileged: true
