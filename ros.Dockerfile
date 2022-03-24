@@ -1,4 +1,6 @@
-FROM ros:noetic-ros-core
+ARG ROS_DISTRO=foxy
+
+FROM ros:${ROS_DISTRO}-ros-base
 
 RUN adduser --gecos '' --disabled-password user
 RUN groupadd wheel
@@ -7,12 +9,15 @@ RUN usermod -a -G dialout,render,video,wheel,sudo user
 RUN echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 RUN apt-get update && apt-get install -y build-essential python3 \
-	ros-noetic-gazebo-ros-pkgs ros-noetic-gazebo-ros-control
+	ros-${ROS_DISTRO}-gazebo-ros-pkgs ros-${ROS_DISTRO}-xacro \
+    ros-${ROS_DISTRO}-joint-state-publisher ros-${ROS_DISTRO}-joint-state-publisher-gui \
+    ros-${ROS_DISTRO}-controller-manager ros-${ROS_DISTRO}-velocity-controllers ros-${ROS_DISTRO}-position-controllers \
+    ros-${ROS_DISTRO}-ros2-control ros-${ROS_DISTRO}-ros2-controllers
 
 USER user
 RUN HOME=/home/user
 RUN touch ~/.sudo_as_admin_successful
-RUN echo "source /opt/ros/noetic/setup.bash" >> /home/user/.bashrc
-RUN echo "source /home/user/ros/devel/setup.bash" >> /home/user/.bashrc
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/user/.bashrc
+RUN echo "source ~/ros/install/setup.bash" >> /home/user/.bashrc
 
 WORKDIR /home/user
