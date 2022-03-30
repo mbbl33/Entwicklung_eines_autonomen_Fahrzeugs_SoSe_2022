@@ -17,8 +17,6 @@ RUN apt-get update && apt-get install -y build-essential python3 \
 
 RUN pip3 install opencv-python
 
-RUN chown /dev/
-
 USER user
 RUN HOME=/home/user
 RUN touch ~/.sudo_as_admin_successful
