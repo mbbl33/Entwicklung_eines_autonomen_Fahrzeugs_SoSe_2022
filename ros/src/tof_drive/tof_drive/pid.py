@@ -27,7 +27,7 @@ class PID_Controller():
         print("D", d_error)
 
         out = p_error + i_error + d_error
-        print("Range", msg.range)
+        print("Range", is_value)
         print("Pid", out)
 
         if self.max < out:
@@ -36,7 +36,7 @@ class PID_Controller():
             out = -self.max
 
         self.err_old = error
-        print("Return s%", out)
+        print("Return ", out)
         return out
 
 
