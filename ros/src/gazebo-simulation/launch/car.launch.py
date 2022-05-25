@@ -77,9 +77,6 @@ def generate_launch_description():
     joy_node = Node(package="joy", executable="joy_node",
                                 output="screen")
 
-    odometry = Node(package="gazebo_simulation", executable="odometry.py",
-                                output="screen")
-
     return LaunchDescription([
         model_path_env,
         physics,
@@ -87,7 +84,6 @@ def generate_launch_description():
         gazebo,
         ackermann_controller,
         joy_node,
-        odometry,
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=spawn_entity,

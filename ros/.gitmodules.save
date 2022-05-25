@@ -1,0 +1,3 @@
+[submodule "src/gazebo-simulation"]
+	path = src/gazebo-simulation
+	url = git@git.thm.de:af-projekt-sven-max1/gazebo-simulation-sven-max.git
