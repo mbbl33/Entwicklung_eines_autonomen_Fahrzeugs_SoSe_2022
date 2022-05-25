@@ -1,0 +1,3 @@
+[submodule "src/gazebo-simulation"]
+	path = src/gazebo-simulation
+	url = git@git.thm.de:autonomes-fahren/sommersemester-2022/gazebo-simulation.git
