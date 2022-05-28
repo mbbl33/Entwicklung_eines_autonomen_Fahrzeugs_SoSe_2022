@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'image_analysis'
+package_name = 'lane_detection'
 
 setup(
     name=package_name,
@@ -20,8 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        'image_converter = image_analysis.image_converter:main',
-        'lane_detection = image_analysis.lane_detection:main',
+            'lane_detection = lane_detection.lane_detection:main',
         ],
     },
 )
