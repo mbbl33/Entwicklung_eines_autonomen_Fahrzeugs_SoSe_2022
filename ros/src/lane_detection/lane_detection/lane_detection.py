@@ -22,6 +22,8 @@ class Lane_Detection(Node):
         # "bridge" between OpenCV and ROS Image
         self.bridge = CvBridge()
 
+        self.left_RoI = Region_of_Interest(150, 300, 0, 300, 100, 20)
+        self.right_RoI = Region_of_Interest(490, 340, 0, 300, 100, 20)
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.pub_lane_img, 1)
 
@@ -62,35 +64,14 @@ class Lane_Detection(Node):
         edges = cv2.Canny(blur, 20, 80)
         return edges
 
-    def get_RoI(self, cv_img, low_center, top_center):
-        height = cv_img.shape[0]
-        width = cv_img.shape[1]
-        # center = int(width / 2)
-
-        # cut along these points
-        pts = np.array(
-            [[low_center - 100, height], [top_center - 100, 100], [top_center + 100, 100], [low_center + 100, height]])
-
-        # white mask (like in lightroom/ photoshop)
-        # pts = pts - pts.min(axis=0)
-        mask = np.zeros(cv_img.shape[:2], np.uint8)
-        cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
-
-        return cv2.bitwise_and(cv_img, cv_img, mask=mask)
-
     # pup lines on raw image
     def get_line_img(self, cv_img, line_vectors, color):
-        last_x1, last_y1, last_x2, last_y2 = 0, 0, 0, 0
-
         img = np.copy(cv_img)
         line_img = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
         if line_vectors is not None:
             for vector in line_vectors:
                 for x1, y1, x2, y2 in vector:
-                    last_x1, last_y1, last_x2, last_y2 = x1, y1, x2, y2
                     cv2.line(line_img, (x1, y1), (x2, y2), color, 3)
-        elif last_x1 != 0 and last_y1 != 0 and last_x2 != 0 and last_y2 != 0:
-            cv2.line(line_img, (last_x1, last_y1), (last_x2, last_y2), color, 3)
         # place lines on original image
         return cv2.addWeighted(img, 0.8, line_img, 1, 1)
 
@@ -102,29 +83,24 @@ class Lane_Detection(Node):
         img_bw = self.get_bw(img_croped)
 
         img_edge = self.get_edges(img_bw)
-        # plt.imshow(img_edge)
-        # plt.show()
-        img_roi_r = self.get_RoI(img_edge, 480, 400)
-        img_roi_l = self.get_RoI(img_edge, 150, 220)
 
-        # plt.imshow(img_roi_l)
-        # plt.show()
-        vectors_r = self.get_lines(img_roi_r)
+
+        img_roi_l = self.left_RoI.get_RoI(img_edge)
+        img_roi_r = self.right_RoI.get_RoI(img_edge)
+
+        #plt.imshow(img_roi_l)
+        #plt.show()
         vectors_l = self.get_lines(img_roi_l)
-        print("Right\t", vectors_r)
+        vectors_r = self.get_lines(img_roi_r)
         print("Left\t", vectors_l)
+        print("Left\t", vectors_r)
 
-        img_cv_r = self.get_line_img(img_croped, vectors_r, (0, 255, 0))
-        img_cv_both = self.get_line_img(img_cv_r, vectors_l, (255, 0, 0))
+        img_cv_right = self.get_line_img(img_croped, vectors_r, (0, 255, 0))
+        img_cv_both = self.get_line_img(img_cv_right, vectors_l, (255, 0, 0))
 
-        #img_cv_mid = self.get_mid(img_cv_both, vectors_l, vectors_r)
-        # plt.imshow(img_cv)
-        # plt.show()
+        # img_cv_mid = self.get_mid(img_cv_both, vectors_l, vectors_r)
         msgOut = self.bridge.cv2_to_imgmsg(img_cv_both, encoding='rgb8')
         self.publisher.publish(msgOut)
-
-        # plt.imshow(img_cv)
-        # plt.show()
 
     def get_mid(self, cv_img, l_vectors, r_vectors):
         height = cv_img.shape[0]
@@ -148,6 +124,48 @@ class Lane_Detection(Node):
 
         # place lines on original image
         return cv2.addWeighted(img, 0.8, line_img, 1, 1)
+
+
+class Region_of_Interest():
+    def __init__(self, lower_x, upper_x, height, max_width, min_width, step_size):
+        self.lower_x = lower_x
+        self.upper_x = upper_x
+        self.roi_height = height
+        self.min_width = min_width
+        self.max_width = max_width
+        self.step_size = step_size
+        self.l_current_w = self.min_width
+        self.u_current_w = self.min_width // 3
+
+    def get_RoI(self, cv_img):
+        img_height = cv_img.shape[0]
+        img_width = cv_img.shape[1]
+        # center = int(width / 2)
+
+        # lower left
+        x1 = self.lower_x - self.l_current_w // 2
+        y1 = img_height
+
+        # upper left
+        x2 = self.upper_x - self.u_current_w // 2
+        y2 = self.roi_height
+
+        # upper right
+        x3 = self.upper_x + self.u_current_w // 2
+        y3 = self.roi_height
+
+        # lower right
+        x4 = self.lower_x + self.l_current_w // 2
+        y4 = img_height
+
+        # cut along these points
+        pts = np.array([[x1, y1], [x2, y2], [x3, y3], [x4, y4]])
+        print(pts)
+        # white mask (like in lightroom/ photoshop)
+        mask = np.zeros(cv_img.shape[:2], np.uint8)
+        cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
+
+        return cv2.bitwise_and(cv_img, cv_img, mask=mask)
 
 
 def main(args=None):
