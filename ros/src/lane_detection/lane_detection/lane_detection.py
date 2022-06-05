@@ -22,14 +22,16 @@ class Lane_Detection(Node):
         # "bridge" between OpenCV and ROS Image
         self.bridge = CvBridge()
 
-        self.left_RoI = Region_of_Interest(150, 300, 0, 300, 100, 20)
-        self.right_RoI = Region_of_Interest(490, 340, 0, 300, 100, 20)
+        self.left_RoI = Region_of_Interest(150, 275, 50, 300, 75, 5)
+        self.right_RoI = Region_of_Interest(490, 360, 50, 300, 75, 5)
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.pub_lane_img, 1)
 
         # raw image with line on it
-        self.publisher = self.create_publisher(Image, 'lane_image', 1)
+        self.pub_lane_img = self.create_publisher(Image, 'lane_image', 1)
 
+        self.pub_roi_left = self.create_publisher(Image, 'left_roi', 1)
+        self.pub_roi_rigth = self.create_publisher(Image, 'right_roi', 1)
     # image conveter
     def get_CV(self, msg_in):
         # ROS image => OpenCV image (grey scaled)
@@ -49,15 +51,25 @@ class Lane_Detection(Node):
         return cv2.pyrDown(cv_image, dstsize=(cols // scale, rows // scale))
 
     def get_crop(self, cv_image):
-        # cut sky
+        # crop sky
         new_height = 275  # by testing with plt.show()
         # [rows, columns]
         return cv_image[new_height:cv_image.shape[0], 0:cv_image.shape[1]]
 
     # lane detection
-    def get_lines(self, edge_img):
-        return cv2.HoughLinesP(edge_img, 2, np.pi / 180, 60, np.array([]), minLineLength=10,
-                               maxLineGap=40)
+    def get_lines(self, edge_img, roi, ):
+        roi_img = roi.get_RoI(edge_img)
+
+        while True:
+            out = cv2.HoughLinesP(roi_img, 2, np.pi / 180, 40, np.array([]), minLineLength=5, maxLineGap=100) #cv2.HoughLinesP(roi_img, 2, np.pi / 180, 60, np.array([]), minLineLength=10, maxLineGap=40)
+            print("Out ",out)
+            if out is None and roi.current_w < roi.max_width:
+                roi.increase_roi()
+                print("aktuelle roi %d von %d ", roi.current_w, roi.lower_x)
+            else:
+                break
+        #roi.reset_roi()
+        return out
 
     def get_edges(self, cv_img):
         blur = cv2.GaussianBlur(cv_img, (5, 5), 0)
@@ -84,23 +96,31 @@ class Lane_Detection(Node):
 
         img_edge = self.get_edges(img_bw)
 
-
-        img_roi_l = self.left_RoI.get_RoI(img_edge)
-        img_roi_r = self.right_RoI.get_RoI(img_edge)
-
-        #plt.imshow(img_roi_l)
-        #plt.show()
-        vectors_l = self.get_lines(img_roi_l)
-        vectors_r = self.get_lines(img_roi_r)
+        # img_roi_l = self.left_RoI.get_RoI(img_edge)
+        # img_roi_r = self.right_RoI.get_RoI(img_edge)
+        vectors_l = self.get_lines(img_edge, self.left_RoI)
+        vectors_r = self.get_lines(img_edge, self.right_RoI)
         print("Left\t", vectors_l)
-        print("Left\t", vectors_r)
+        print("Right\t", vectors_r)
 
+        #plt.imshow(img_croped)
+        #plt.show()
         img_cv_right = self.get_line_img(img_croped, vectors_r, (0, 255, 0))
         img_cv_both = self.get_line_img(img_cv_right, vectors_l, (255, 0, 0))
 
         # img_cv_mid = self.get_mid(img_cv_both, vectors_l, vectors_r)
         msgOut = self.bridge.cv2_to_imgmsg(img_cv_both, encoding='rgb8')
-        self.publisher.publish(msgOut)
+        self.pub_lane_img.publish(msgOut)
+
+        #pub rois on raw
+        outL = self.left_RoI.get_RoI(img_croped)
+        outR = self.right_RoI.get_RoI(img_croped)
+        msgOut = self.bridge.cv2_to_imgmsg(outL, encoding='rgb8')
+        self.pub_roi_left.publish(msgOut)
+        msgOut = self.bridge.cv2_to_imgmsg(outR, encoding='rgb8')
+        self.pub_roi_rigth.publish(msgOut)
+        self.left_RoI.reset_roi()
+        self.right_RoI.reset_roi()
 
     def get_mid(self, cv_img, l_vectors, r_vectors):
         height = cv_img.shape[0]
@@ -134,38 +154,43 @@ class Region_of_Interest():
         self.min_width = min_width
         self.max_width = max_width
         self.step_size = step_size
-        self.l_current_w = self.min_width
-        self.u_current_w = self.min_width // 3
+        self.current_w = self.min_width
 
     def get_RoI(self, cv_img):
         img_height = cv_img.shape[0]
         img_width = cv_img.shape[1]
         # center = int(width / 2)
-
+        upper_width_faktor = 0.3
         # lower left
-        x1 = self.lower_x - self.l_current_w // 2
+        x1 = self.lower_x - self.current_w // 2
         y1 = img_height
 
         # upper left
-        x2 = self.upper_x - self.u_current_w // 2
+        x2 = self.upper_x - (self.current_w // 3) // 2
         y2 = self.roi_height
 
         # upper right
-        x3 = self.upper_x + self.u_current_w // 2
+        x3 = self.upper_x + (self.current_w // 3) // 2
         y3 = self.roi_height
 
         # lower right
-        x4 = self.lower_x + self.l_current_w // 2
+        x4 = self.lower_x + self.current_w // 2
         y4 = img_height
 
         # cut along these points
         pts = np.array([[x1, y1], [x2, y2], [x3, y3], [x4, y4]])
-        print(pts)
         # white mask (like in lightroom/ photoshop)
         mask = np.zeros(cv_img.shape[:2], np.uint8)
         cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
 
         return cv2.bitwise_and(cv_img, cv_img, mask=mask)
+
+    def increase_roi(self):
+        if (self.current_w < self.max_width):
+            self.current_w += self.step_size
+
+    def reset_roi(self):
+        self.current_w = self.min_width
 
 
 def main(args=None):
