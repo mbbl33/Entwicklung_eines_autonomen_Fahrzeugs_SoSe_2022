@@ -3,8 +3,9 @@ import numpy as np
 
 
 class Region_of_Interest():
-    def __init__(self, lower_x, upper_x, height, max_width, min_width, step_size):
+    def __init__(self, lower_x, lower_y, upper_x, height, max_width, min_width, step_size):
         self.lower_x = lower_x
+        self.lower_y = lower_y
         self.upper_x = upper_x
         self.roi_height = height
         self.min_width = min_width
@@ -17,7 +18,7 @@ class Region_of_Interest():
 
         # lower left
         x1 = self.lower_x - self.current_w // 2
-        y1 = img_height
+        y1 = img_height - self.lower_y
 
         # upper left
         x2 = self.upper_x - (self.current_w // 3) // 2
@@ -29,7 +30,7 @@ class Region_of_Interest():
 
         # lower right
         x4 = self.lower_x + self.current_w // 2
-        y4 = img_height
+        y4 = img_height - self.lower_y
 
         # cut along these points
         pts = np.array([[x1, y1], [x2, y2], [x3, y3], [x4, y4]])
