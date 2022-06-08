@@ -270,7 +270,7 @@
   <xacro:lidar_sensor idx="Front_Right" xyz="0.05 -0.1 0.018" angle="-1.5707963267948966"/>
   <xacro:lidar_sensor idx="Front" xyz="0.15 0 0.018" angle="0"/>
   <xacro:lidar_sensor idx="Back" xyz="-0.15 0 0.018" angle="3.141592"/>
-  <xacro:camera_sensor xyz="-0.07 0 0.185" pitch="-0.1"/>
+  <xacro:camera_sensor xyz="0.5 0 1" pitch="1.57"/>
 
   <ros2_control name="GazeboSystem" type="system">
     <hardware>

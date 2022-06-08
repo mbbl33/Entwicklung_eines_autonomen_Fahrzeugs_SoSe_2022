@@ -47,10 +47,8 @@ class LaneDetection(Node):
         while True:
             out = cv2.HoughLinesP(roi_img, 1, np.pi / 180, 15, np.array([]), minLineLength=30,
                                   maxLineGap=20)  # cv2.HoughLinesP(roi_img, 2, np.pi / 180, 60, np.array([]), minLineLength=10, maxLineGap=40)
-            print("Out ", out)
             if out is None and roi.current_w < roi.max_width:
                 roi.increase_roi()
-                print("aktuelle roi %d von %d ", roi.current_w, roi.lower_x)
             else:
                 break
         # roi.reset_roi()
@@ -79,8 +77,9 @@ class LaneDetection(Node):
         vectors_l = self.get_lines(img_edge, self.left_RoI)
         vectors_r = self.get_lines(img_edge, self.right_RoI)
         mid_of_lines = self.get_mid_x(vectors_l, vectors_r)
-        print("Left\t", vectors_l)
-        print("Right\t", vectors_r)
+
+        #print("Left\t", vectors_l)
+        #print("Right\t", vectors_r)
         print("X \t", mid_of_lines)
 
         # plt.imshow(img_edge)
@@ -104,17 +103,20 @@ class LaneDetection(Node):
         self.right_RoI.reset_roi()
 
     def get_mid_x(self, l_vectors, r_vectors):
-        if l_vectors is not None:
-            for vector in l_vectors:
-                for x1, y1, x2, y2 in vector:
-                    self.lowestXL = x1 if y1 < y2 else x2
 
-        if r_vectors is not None:
-            for vector in r_vectors:
-                for x1, y1, x2, y2 in vector:
-                    self.lowestXR = x1 if y1 < y2 else x2
+        self.lowestXL = self.calc_average_x(l_vectors, self.lowestXL)
+        self.lowestXR = self.calc_average_x(r_vectors, self.lowestXR)
 
         return (self.lowestXL + self.lowestXR) / 2
+
+    def calc_average_x(self, vectors, old_value):
+        if vectors is not None:
+            for vector in vectors:
+                print(vector)
+                for x1, y1, x2, y2 in vector:
+                    old_value += x1 + x2
+            old_value = old_value / (len(vectors) * 2)
+        return old_value
 
     def draw_mid_of_lines(self, cv_img, x):
         height = cv_img.shape[0]
@@ -154,6 +156,7 @@ class ImgConverter():
 
     def get_ros_img(cv_image):
         return ImgConverter.bridge.cv2_to_imgmsg(cv_image, encoding='rgb8')
+
 
 def main(args=None):
     rclpy.init(args=args)
