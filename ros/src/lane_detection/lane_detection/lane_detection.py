@@ -13,6 +13,7 @@ from message_filters import Subscriber
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+from std_msgs.msg import Float64
 
 
 class LaneDetection(Node):
@@ -26,8 +27,9 @@ class LaneDetection(Node):
         # self.right_RoI = Region_of_Interest(self.x_right_lane, 0, 360, 50, 300, 75, 5)
         self.x_left_lane = 140
         self.x_right_lane = 380
-        self.left_RoI = Region_of_Interest(self.x_left_lane, 0, self.x_left_lane, 0, 300, 20, 5)
-        self.right_RoI = Region_of_Interest(self.x_right_lane, 0, self.x_right_lane, 0, 300, 20, 5)
+        max_roi = 100
+        self.left_RoI = Region_of_Interest(self.x_left_lane, 0, self.x_left_lane, 0, max_roi, 20, 5)
+        self.right_RoI = Region_of_Interest(self.x_right_lane, 0, self.x_right_lane, 0, max_roi, 20, 5)
 
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.pub_lane_img, 1)
@@ -39,20 +41,29 @@ class LaneDetection(Node):
         self.pub_roi_left = self.create_publisher(Image, 'left_roi', 1)
         self.pub_roi_rigth = self.create_publisher(Image, 'right_roi', 1)
 
+        #simple steering
+        self.publisher_steering = self.create_publisher(
+            Float64, '/steering', 1)
+
     def get_edges(self, cv_img):
-        blur = cv2.GaussianBlur(cv_img, (5, 5), 0)
-        edges = cv2.Canny(blur, 10, 60)
+        # blur = cv2.GaussianBlur(cv_img, (5, 5), 0)
+        edges = cv2.Canny(cv_img, 10, 40)
         return edges
 
-    def get_lines(self, edge_img, roi, ):
+    def get_lines(self, edge_img, roi):
         roi_img = roi.get_RoI(edge_img)
 
         while True:
-            out = cv2.HoughLinesP(roi_img, 1, np.pi / 180, 15, np.array([]), minLineLength=30,
-                                  maxLineGap=20)  # cv2.HoughLinesP(roi_img, 2, np.pi / 180, 60, np.array([]), minLineLength=10, maxLineGap=40)
+            out = cv2.HoughLinesP(roi_img, 1, np.pi / 180, 15, np.array([]), minLineLength=15,
+                                  maxLineGap=50)  # cv2.HoughLinesP(roi_img, 2, np.pi / 180, 60, np.array([]), minLineLength=10, maxLineGap=40)
             if out is None and roi.current_w < roi.max_width:
                 roi.increase_roi()
             else:
+                plt.imshow(roi_img)
+                #print(roi.current_w)
+                # plt.show()
+                if out is not None:
+                    roi.reset_roi()
                 break
         # roi.reset_roi()
         return out
@@ -73,24 +84,26 @@ class LaneDetection(Node):
         img_raw = ImgConverter.get_CV(msg_in)
         img_croped = ImgConverter.get_crop(img_raw)
 
-        #img_bw = ImgConverter.get_bw(img_croped)
+        img_bw = ImgConverter.get_bw(img_croped)
 
-        img_edge = self.get_edges(img_croped)
+        img_edge = self.get_edges(img_bw)
 
         vectors_l = self.get_lines(img_edge, self.left_RoI)
         vectors_r = self.get_lines(img_edge, self.right_RoI)
         mid_of_lines = self.get_mid_x(vectors_l, vectors_r)
-
+        drive_way = mid_of_lines * 1.25
         #print("Left\t", vectors_l)
         #print("Right\t", vectors_r)
-        print("X \t", mid_of_lines)
+        #print("X \t", mid_of_lines)
 
-        #plt.imshow(img_edge)
-        #plt.show()
+        # plt.imshow(self.left_RoI.get_RoI(img_edge))
+        # plt.show()
 
         img_cv_right = self.draw_line_img(img_croped, vectors_r, (0, 255, 0))
-        img_cv_mid = self.draw_mid_of_lines(img_cv_right, mid_of_lines)
-        img_cv_all_lines = self.draw_line_img(img_cv_mid, vectors_l, (255, 0, 0))
+        img_cv_mid_of_lanes = self.draw_veritcal_line(img_cv_right, mid_of_lines,(255, 0, 255))
+        img_cv_mid_of_img = self.draw_veritcal_line(img_cv_mid_of_lanes, img_croped.shape[1] // 2,(255, 255, 255))
+        img_cv_driveway = self.draw_veritcal_line(img_cv_mid_of_img, drive_way, (0, 0, 255))
+        img_cv_all_lines = self.draw_line_img(img_cv_driveway, vectors_l, (255, 0, 0))
 
         msgOut = ImgConverter.get_ros_img(img_cv_all_lines)
         self.pub_lane_img.publish(msgOut)
@@ -102,9 +115,19 @@ class LaneDetection(Node):
         self.pub_roi_left.publish(msgOut)
         msgOut = ImgConverter.get_ros_img(outR)
         self.pub_roi_rigth.publish(msgOut)
-        self.left_RoI.reset_roi()
-        self.right_RoI.reset_roi()
-
+        # self.left_RoI.reset_roi()
+        # self.right_RoI.reset_roi()
+        steer = Float64()
+        mid = img_croped.shape[1] /2
+        if mid < drive_way:
+            steer.data = 12.0
+            print("A")
+        elif drive_way < mid:
+            print("B")
+            steer.data = -12.0
+        else:
+            steer.data = 0.0
+        self.publisher_steering.publish(steer)
     def get_mid_x(self, l_vectors, r_vectors):
 
         self.x_left_lane = self.calc_average_x(l_vectors, self.x_left_lane)
@@ -119,18 +142,17 @@ class LaneDetection(Node):
                 for x1, y1, x2, y2 in vector:
                     average_x += x1 + x2
             out = average_x / (len(vectors) * 2)
-            print("Average x: ", out)
         else:
             out = old_value
         return out
 
-    def draw_mid_of_lines(self, cv_img, x):
+    def draw_veritcal_line(self, cv_img, x, color):
         height = cv_img.shape[0]
         img = np.copy(cv_img)
         line_img = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
         x = int(x)
 
-        cv2.line(line_img, (x, height), (x, 0), (255, 0, 255), 3)
+        cv2.line(line_img, (x, height), (x, 0), color, 3)
 
         # place lines on original image
         return cv2.addWeighted(img, 0.8, line_img, 1, 1)
