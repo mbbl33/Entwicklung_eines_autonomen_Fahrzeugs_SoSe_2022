@@ -20,10 +20,14 @@ class LaneDetection(Node):
     def __init__(self):
         super().__init__('image_converter')
 
-        self.lowestXL = 0
-        self.lowestXR = 490
-        self.left_RoI = Region_of_Interest(self.lowestXL, 80, 170, 50, 300, 75, 5)
-        self.right_RoI = Region_of_Interest(self.lowestXR, 0, 360, 50, 300, 75, 5)
+        # self.x_left_lane = 0
+        # self.x_right_lane = 490
+        # self.left_RoI = Region_of_Interest(self.x_left_lane, 80, 170, 50, 300, 75, 5)
+        # self.right_RoI = Region_of_Interest(self.x_right_lane, 0, 360, 50, 300, 75, 5)
+        self.x_left_lane = 140
+        self.x_right_lane = 380
+        self.left_RoI = Region_of_Interest(self.x_left_lane, 0, self.x_left_lane, 0, 300, 20, 5)
+        self.right_RoI = Region_of_Interest(self.x_right_lane, 0, self.x_right_lane, 0, 300, 20, 5)
 
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.pub_lane_img, 1)
@@ -35,10 +39,9 @@ class LaneDetection(Node):
         self.pub_roi_left = self.create_publisher(Image, 'left_roi', 1)
         self.pub_roi_rigth = self.create_publisher(Image, 'right_roi', 1)
 
-    # lane detection
     def get_edges(self, cv_img):
         blur = cv2.GaussianBlur(cv_img, (5, 5), 0)
-        edges = cv2.Canny(blur, 20, 80)
+        edges = cv2.Canny(blur, 10, 60)
         return edges
 
     def get_lines(self, edge_img, roi, ):
@@ -70,9 +73,9 @@ class LaneDetection(Node):
         img_raw = ImgConverter.get_CV(msg_in)
         img_croped = ImgConverter.get_crop(img_raw)
 
-        img_bw = ImgConverter.get_bw(img_croped)
+        #img_bw = ImgConverter.get_bw(img_croped)
 
-        img_edge = self.get_edges(img_bw)
+        img_edge = self.get_edges(img_croped)
 
         vectors_l = self.get_lines(img_edge, self.left_RoI)
         vectors_r = self.get_lines(img_edge, self.right_RoI)
@@ -82,8 +85,8 @@ class LaneDetection(Node):
         #print("Right\t", vectors_r)
         print("X \t", mid_of_lines)
 
-        # plt.imshow(img_edge)
-        # plt.show()
+        #plt.imshow(img_edge)
+        #plt.show()
 
         img_cv_right = self.draw_line_img(img_croped, vectors_r, (0, 255, 0))
         img_cv_mid = self.draw_mid_of_lines(img_cv_right, mid_of_lines)
@@ -104,19 +107,22 @@ class LaneDetection(Node):
 
     def get_mid_x(self, l_vectors, r_vectors):
 
-        self.lowestXL = self.calc_average_x(l_vectors, self.lowestXL)
-        self.lowestXR = self.calc_average_x(r_vectors, self.lowestXR)
+        self.x_left_lane = self.calc_average_x(l_vectors, self.x_left_lane)
+        self.x_right_lane = self.calc_average_x(r_vectors, self.x_right_lane)
 
-        return (self.lowestXL + self.lowestXR) / 2
+        return (self.x_left_lane + self.x_right_lane) / 2
 
     def calc_average_x(self, vectors, old_value):
+        average_x = 0
         if vectors is not None:
             for vector in vectors:
-                print(vector)
                 for x1, y1, x2, y2 in vector:
-                    old_value += x1 + x2
-            old_value = old_value / (len(vectors) * 2)
-        return old_value
+                    average_x += x1 + x2
+            out = average_x / (len(vectors) * 2)
+            print("Average x: ", out)
+        else:
+            out = old_value
+        return out
 
     def draw_mid_of_lines(self, cv_img, x):
         height = cv_img.shape[0]

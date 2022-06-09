@@ -21,11 +21,11 @@ class Region_of_Interest():
         y1 = img_height - self.lower_y
 
         # upper left
-        x2 = self.upper_x - (self.current_w // 3) // 2
+        x2 = self.upper_x - (self.current_w) // 2
         y2 = self.roi_height
 
         # upper right
-        x3 = self.upper_x + (self.current_w // 3) // 2
+        x3 = self.upper_x + (self.current_w ) // 2
         y3 = self.roi_height
 
         # lower right
