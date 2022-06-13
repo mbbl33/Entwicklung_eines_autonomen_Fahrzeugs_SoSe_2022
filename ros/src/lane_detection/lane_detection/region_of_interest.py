@@ -39,7 +39,7 @@ class Region_of_Interest():
         mask = np.zeros(cv_img.shape[:2], np.uint8)
         cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
 
-        return cv2.bitwise_and(cv_img, cv_img, mask=mask)
+        return cv2.bitwise_and(cv_img, cv_img, mask=mask), pts
 
     def increase_roi(self):
         if (self.current_w < self.max_width):
