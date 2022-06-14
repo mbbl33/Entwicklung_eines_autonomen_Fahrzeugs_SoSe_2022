@@ -25,8 +25,8 @@ class LaneDetection(Node):
         # self.x_right_lane = 490
         # self.left_RoI = Region_of_Interest(self.x_left_lane, 80, 170, 50, 300, 75, 5)
         # self.right_RoI = Region_of_Interest(self.x_right_lane, 0, 360, 50, 300, 75, 5)
-        self.x_left_lane = 70
-        self.x_right_lane = 580
+        self.x_left_lane = 90
+        self.x_right_lane = 575
         max_roi = 100
         self.left_RoI = Region_of_Interest(self.x_left_lane, 0, self.x_left_lane, 0, max_roi, 20, 5)
         self.right_RoI = Region_of_Interest(self.x_right_lane, 0, self.x_right_lane, 0, max_roi, 20, 5)
@@ -115,7 +115,8 @@ class LaneDetection(Node):
         #print("X \t", mid_of_lines)
 
         # plt.imshow(self.left_RoI.get_RoI(img_edge))
-        # plt.show()
+        plt.imshow(img_edge)
+        plt.show()
 
         img_cv_right = self.draw_line_img(img_warp, vectors_r, (0, 255, 0))
         img_cv_mid_of_lanes = self.draw_veritcal_line(img_cv_right, mid_of_lines,(255, 0, 255))

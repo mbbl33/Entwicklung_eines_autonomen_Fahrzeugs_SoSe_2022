@@ -1,0 +1,166 @@
+\documentclass{beamer}
+
+%Style
+\usetheme{Warsaw}
+
+\setbeamercolor{normal text}{fg=white,bg=black!90}
+\setbeamercolor{structure}{fg=white}
+
+\setbeamercolor{alerted text}{fg=red!85!black}
+
+\setbeamercolor{item projected}{use=item,fg=black,bg=item.fg!35}
+
+\setbeamercolor*{palette primary}{use=structure,fg=structure.fg}
+\setbeamercolor*{palette secondary}{use=structure,fg=structure.fg!95!black}
+\setbeamercolor*{palette tertiary}{use=structure,fg=structure.fg!90!black}
+\setbeamercolor*{palette quaternary}{use=structure,fg=structure.fg!95!black,bg=black!80}
+
+\setbeamercolor*{framesubtitle}{fg=white}
+
+\setbeamercolor*{block title}{parent=structure,bg=black!60}
+\setbeamercolor*{block body}{fg=black,bg=black!10}
+\setbeamercolor*{block title alerted}{parent=alerted text,bg=black!15}
+\setbeamercolor*{block title example}{parent=example text,bg=black!15}
+%Packages
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\title[]{Entwicklung eines autonomen Fahrzeugs}
+\author{Sven Thomas \& Maximilian Biebl}
+\institute[THM]{Technische Hochschule Mittelhessen}
+\date{}
+
+\begin{document}
+\begin{frame}
+\titlepage
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.40\textwidth]{"./img/Auto"}
+\label{fig:Auto}
+\end{figure}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Inhalt}
+\tableofcontents
+\end{frame}
+
+\section{Linienerkennung und Lenkung}
+\subsection{Erste \glqq naive\grqq Idee und Probleme}
+
+\begin{frame}
+\frametitle{Erste \glqq naive\grqq  Idee}
+Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand dessen Lenkwinkel bestimmen
+\begin{center}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.80\textwidth]{"./img/vector_gerade"}
+\caption{Erster Gedanke}
+\label{fig:Lenkung via Vektoren in Gerade}
+\end{figure}
+
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Problem}
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.80\textwidth]{"./img/vector_kurve"}
+\caption{Problem in der Kurve}
+\label{fig:Lenkung via Vektoren in Kurve}
+\end{figure}
+\end{center}
+\end{frame}
+
+\subsection{Weiterentwicklung der ersten Idee}
+
+\begin{frame}
+
+\frametitle{Wer brauch Y?}
+
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.50\textwidth]{"./img/Y-Yeet"}
+
+\label{fig:Weg mit dem Y}
+\end{figure}
+\end{center}
+
+\begin{itemize}
+\item Erkenntinis: wir brauchen nur X-Koordinaten um Mitte zubestimmen
+\item Anhand des \glqq Durschnitts-X\grqq  und der Bildmitte wissen wir in welche richtung wir müssen. 
+\item Wie weiter die beiden X-Koordinaten getrennt sind um so stärker müssen wir lenken 
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+\frametitle{Probleme mit Mittellinie}
+
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.50\textwidth]{"./img/mittellinie"}
+\label{fig:Mittellinie}
+\end{figure}
+\end{center}
+
+\begin{itemize}
+\item Houghline zu empfindlich $\Rightarrow$ zuviel \glqq Beifang\grqq 
+\item Houghline zu grob $\Rightarrow$ Probleme bei Kurven
+\item einfach Aussenlinie nehmen und 1,25x des Durschnitts-X als Soll-Fahrbahn
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+\frametitle{Discopumper-Algorithmus für region of interest}
+
+\begin{itemize}
+\item roi bekommt festen Startbereich
+\item wir nehmen erstmal alles was wir bekommen an X-Koordinaten
+\item wenn wir nichts finden müssen wir breiter werden
+\item wenn wir immer noch nichts finden nehmen wir das letzte was wir hatten
+\end{itemize}
+
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.50\textwidth]{"./img/roi_breite"}
+\label{fig:roi}
+\caption{Unterschiedlich große roi}
+\end{figure}
+\end{center}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Verbesserung durch Top-down view}
+
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.50\textwidth]{"./img/longneck"}
+\label{fig:roi}
+\end{figure}
+\end{center}
+
+\begin{itemize}
+\item opimierung durch Top-down view
+\item zeitweise Kamera tatsächlich 1m vor dem Auto schwebend nach unten kuckend
+\end{itemize}
+\end{frame}
+
+\end{document}
