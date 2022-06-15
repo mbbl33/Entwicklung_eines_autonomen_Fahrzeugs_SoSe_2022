@@ -5,7 +5,8 @@ import cv2
 import matplotlib.pylab as plt
 import numpy as np
 
-from .region_of_interest import Region_of_Interest
+from .img_converter import ImgConverter
+from .region_of_interest import RegionOfInterest
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
@@ -20,137 +21,84 @@ class LaneDetection(Node):
 
     def __init__(self):
         super().__init__('image_converter')
-
-        # self.x_left_lane = 0
-        # self.x_right_lane = 490
-        # self.left_RoI = Region_of_Interest(self.x_left_lane, 80, 170, 50, 300, 75, 5)
-        # self.right_RoI = Region_of_Interest(self.x_right_lane, 0, 360, 50, 300, 75, 5)
-        self.x_left_lane = 90
-        self.x_right_lane = 575
+        self.debug = True
+        self.x_left_lane = 140
+        self.x_right_lane = 380
         max_roi = 100
-        self.left_RoI = Region_of_Interest(self.x_left_lane, 0, self.x_left_lane, 0, max_roi, 20, 5)
-        self.right_RoI = Region_of_Interest(self.x_right_lane, 0, self.x_right_lane, 0, max_roi, 20, 5)
+        min_roi = 40
+        self.left_RoI = RegionOfInterest(self.x_left_lane, 0, self.x_left_lane, 0, max_roi, min_roi, 5)
+        self.right_RoI = RegionOfInterest(self.x_right_lane, 0, self.x_right_lane, 0, max_roi, min_roi, 5)
 
         # /camera/image_raw [sensor_msgs/msg/Image]
-        self.subscription = self.create_subscription(Image, '/camera/image_raw', self.pub_lane_img, 1)
+        self.subscription = self.create_subscription(Image, '/camera/image_raw', self.steer, 1)
 
-        # raw image with line on it
+        # raw image with lines on it for debug
         self.pub_lane_img = self.create_publisher(Image, 'lane_image', 1)
 
         # pub RoI for debug
         self.pub_roi_left = self.create_publisher(Image, 'left_roi', 1)
-        self.pub_roi_rigth = self.create_publisher(Image, 'right_roi', 1)
+        self.pub_roi_right = self.create_publisher(Image, 'right_roi', 1)
 
-        #simple steering
+        # simple steering
         self.publisher_steering = self.create_publisher(
             Float64, '/steering', 1)
 
     def get_edges(self, cv_img):
-        # blur = cv2.GaussianBlur(cv_img, (5, 5), 0)
-        edges = cv2.Canny(cv_img, 10, 40)
+        img_bw = ImgConverter.get_bw(cv_img)
+        edges = cv2.Canny(img_bw, 10, 40)
         return edges
 
     def get_lines(self, edge_img, roi):
-        roi_img = roi.get_RoI(edge_img)[0]
+        roi_img = roi.get_roi(edge_img)
 
         while True:
-            out = cv2.HoughLinesP(roi_img, 1, np.pi / 180, 15, np.array([]), minLineLength=15,
-                                  maxLineGap=50)  # cv2.HoughLinesP(roi_img, 2, np.pi / 180, 60, np.array([]), minLineLength=10, maxLineGap=40)
+            out = cv2.HoughLinesP(roi_img,
+                                  1,
+                                  np.pi / 180,
+                                  15,
+                                  np.array([]),
+                                  minLineLength=15,
+                                  maxLineGap=50)
             if out is None and roi.current_w < roi.max_width:
                 roi.increase_roi()
             else:
-                plt.imshow(roi_img)
-                #print(roi.current_w)
-                # plt.show()
                 if out is not None:
                     roi.reset_roi()
                 break
-        # roi.reset_roi()
         return out
 
-    # pup lines on raw image
-    def draw_line_img(self, cv_img, line_vectors, color):
-        img = np.copy(cv_img)
-        line_img = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
-        if line_vectors is not None:
-            for vector in line_vectors:
-                for x1, y1, x2, y2 in vector:
-                    cv2.line(line_img, (x1, y1), (x2, y2), color, 3)
-        # place lines on original image
-        return cv2.addWeighted(img, 0.8, line_img, 1, 1)
+    def analyze(self, msg_in):
 
-    def pub_lane_img(self, msg_in):
-
-        img_raw = ImgConverter.get_CV(msg_in)
-        #img_croped = ImgConverter.get_crop(img_raw)
-
-        #DEBUG - Circles in raw image, to be removed
-
-        cv2.circle(img_raw, (0,380), 5, (255,0,0), -1)
-        cv2.circle(img_raw, (150,320), 5, (255,0,0), -1)
-        cv2.circle(img_raw, (450,380), 5, (255,0,0), -1)
-        cv2.circle(img_raw, (400,320), 5, (255,0,0), -1)
-
-        cv2.circle(img_raw, (0,0), 10, (255,0,0), -1)
-        cv2.circle(img_raw, (0,480), 10, (255,0,0), -1)
-        cv2.circle(img_raw, (640,0), 10, (255,0,0), -1)
-        cv2.circle(img_raw, (640,480), 10, (255,0,0), -1)
-
-        pts1 = np.float32([[150,320], [0,380], [400,320], [450,380]])
-        pts2 = np.float32([[0,0], [0,480], [640,0], [640,480]])
-
-        img_transf = cv2.getPerspectiveTransform(pts1,pts2)
-        img_warp = cv2.warpPerspective(img_raw, img_transf, (640,480))
-
-        img_bw = ImgConverter.get_bw(img_warp)
-
-        img_edge = self.get_edges(img_bw)
-
+        img_raw = ImgConverter.get_cv(msg_in)
+        img_croped = ImgConverter.get_crop(img_raw)
+        img_edge = self.get_edges(img_croped)
         vectors_l = self.get_lines(img_edge, self.left_RoI)
         vectors_r = self.get_lines(img_edge, self.right_RoI)
         mid_of_lines = self.get_mid_x(vectors_l, vectors_r)
-        drive_way = mid_of_lines * 1.25
-        #print("Left\t", vectors_l)
-        #print("Right\t", vectors_r)
-        #print("X \t", mid_of_lines)
+        #drive_way = mid_of_lines * 1.25
+        drive_way = mid_of_lines * 0.75
 
-        # plt.imshow(self.left_RoI.get_RoI(img_edge))
-        plt.imshow(img_edge)
-        plt.show()
+        if (self.debug):
+            img_cv_all_lines = self.debug_draw_lines(img_croped, vectors_r, vectors_l, mid_of_lines, drive_way)
+            msg_out = ImgConverter.get_ros_img(img_cv_all_lines)
+            self.pub_lane_img.publish(msg_out)
+            self.debug_rois(img_raw)
+        return (img_croped, drive_way)
+        # self.steer(img_croped, drive_way)
 
-        img_cv_right = self.draw_line_img(img_warp, vectors_r, (0, 255, 0))
-        img_cv_mid_of_lanes = self.draw_veritcal_line(img_cv_right, mid_of_lines,(255, 0, 255))
-        img_cv_mid_of_img = self.draw_veritcal_line(img_cv_mid_of_lanes, img_warp.shape[1] // 2,(255, 255, 255))
-        img_cv_driveway = self.draw_veritcal_line(img_cv_mid_of_img, drive_way, (0, 0, 255))
-        img_cv_all_lines = self.draw_line_img(img_cv_driveway, vectors_l, (255, 0, 0))
-
-        
-
-        msgOut = ImgConverter.get_ros_img(img_cv_all_lines)
-        self.pub_lane_img.publish(msgOut)
-
-        # pub rois on raw for debug
-        outL = self.left_RoI.get_RoI(img_warp)[0]
-        outR = self.right_RoI.get_RoI(img_warp)[0]
-        msgOut = ImgConverter.get_ros_img(outL)
-        self.pub_roi_left.publish(msgOut)
-        msgOut = ImgConverter.get_ros_img(outR)
-        self.pub_roi_rigth.publish(msgOut)
-        # self.left_RoI.reset_roi()
-        # self.right_RoI.reset_roi()
+    def steer(self, msg_in):
+        analyzed = self.analyze(msg_in)
+        img = analyzed[0]
+        drive_way = analyzed[1]
         steer = Float64()
-        mid = img_warp.shape[1] /2
-        if mid < drive_way:
-            steer.data = 12.0
-            print("A")
-        elif drive_way < mid:
-            print("B")
-            steer.data = -12.0
-        else:
-            steer.data = 0.0
+        mid = img.shape[1] / 2
+        dif = drive_way - mid
+        out = min(dif, 45)
+        out = max(out, -45)
+        steer.data = float(out)
         self.publisher_steering.publish(steer)
-    def get_mid_x(self, l_vectors, r_vectors):
 
+    def get_mid_x(self, l_vectors, r_vectors):
         self.x_left_lane = self.calc_average_x(l_vectors, self.x_left_lane)
         self.x_right_lane = self.calc_average_x(r_vectors, self.x_right_lane)
 
@@ -167,44 +115,41 @@ class LaneDetection(Node):
             out = old_value
         return out
 
+    ######### for Debug
+    def debug_rois(self, img):
+        # pub rois on img for debug
+        outL = self.left_RoI.get_roi(img)
+        outR = self.right_RoI.get_roi(img)
+        msgOut = ImgConverter.get_ros_img(outL)
+        self.pub_roi_left.publish(msgOut)
+        msgOut = ImgConverter.get_ros_img(outR)
+        self.pub_roi_right.publish(msgOut)
+
+    # pup lines on image
+    def debug_draw_lines(self, img, vectors_r, vectors_l, mid_of_lines, drive_way):
+        img_cv_right = self.draw_lane_img(img, vectors_r, (0, 255, 0))
+        img_cv_mid_of_lanes = self.draw_veritcal_line(img_cv_right, mid_of_lines, (255, 0, 255))
+        img_cv_mid_of_img = self.draw_veritcal_line(img_cv_mid_of_lanes, img.shape[1] // 2, (255, 255, 255))
+        img_cv_driveway = self.draw_veritcal_line(img_cv_mid_of_img, drive_way, (0, 0, 255))
+        return self.draw_lane_img(img_cv_driveway, vectors_l, (255, 0, 0))
+
+    def draw_lane_img(self, cv_img, line_vectors, color):
+        img = np.copy(cv_img)
+        line_img = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
+        if line_vectors is not None:
+            for vector in line_vectors:
+                for x1, y1, x2, y2 in vector:
+                    cv2.line(line_img, (x1, y1), (x2, y2), color, 3)
+        # place lines on original image
+        return cv2.addWeighted(img, 0.8, line_img, 1, 1)
+
     def draw_veritcal_line(self, cv_img, x, color):
         height = cv_img.shape[0]
         img = np.copy(cv_img)
         line_img = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
         x = int(x)
-
         cv2.line(line_img, (x, height), (x, 0), color, 3)
-
-        # place lines on original image
         return cv2.addWeighted(img, 0.8, line_img, 1, 1)
-
-
-class ImgConverter():
-    bridge = CvBridge()  # "bridge" between OpenCV and ROS Image
-
-    @staticmethod
-    def get_CV(msg_in):
-        # ROS image => OpenCV image (grey scaled)
-        return ImgConverter.bridge.imgmsg_to_cv2(msg_in, desired_encoding='8UC3')
-
-    @staticmethod
-    def get_bw(cv_image):
-        gray_img = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
-        threshold = 45  # at what grey level  a pixel should become white
-        white = 255
-        # return is a tuple => first value ignored
-        (thresh, bw_img) = cv2.threshold(gray_img, threshold, white, cv2.THRESH_BINARY)
-        return bw_img
-
-    @staticmethod
-    def get_crop(cv_image):
-        # crop sky
-        new_height = 275  # by testing with plt.show()
-        # [rows, columns]
-        return cv_image[new_height:cv_image.shape[0], 0:cv_image.shape[1]]
-
-    def get_ros_img(cv_image):
-        return ImgConverter.bridge.cv2_to_imgmsg(cv_image, encoding='rgb8')
 
 
 def main(args=None):

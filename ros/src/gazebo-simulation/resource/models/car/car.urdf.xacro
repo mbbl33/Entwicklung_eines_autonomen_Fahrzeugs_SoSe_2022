@@ -223,6 +223,49 @@
     </gazebo>
   </xacro:macro>
 
+  <xacro:macro name="lidar_sensor_lane" params="idx xyz angle">
+    <link name="lidar_link_${idx}">
+      <!--xacro:null_inertial/-->
+    </link>
+
+    <joint name="lidar_joint_${idx}" type="fixed">
+      <axis xyz="0 0 -1"/>
+      <origin xyz="${xyz}" rpy="0 0 ${angle}"/>
+      <parent link="base_link"/>
+      <child link="lidar_link_${idx}"/>
+    </joint>
+
+    <gazebo reference="lidar_link_${idx}">
+      <sensor type="ray" name="lidar_sensor_${idx}">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>true</visualize>
+        <update_rate>5</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>2</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.027</min_angle>
+              <max_angle>0.027</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.10</min>
+            <max>1.5</max>
+            <resolution>0.009</resolution>
+          </range>
+        </ray>
+        <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+            <remapping>~/out:=tof_${idx}</remapping>
+          </ros>
+          <output_type>sensor_msgs/Range</output_type>
+          <frame_name>tof_${idx}</frame_name>
+          <radiation_type>ultrasound</radiation_type>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
 
   <xacro:macro name="camera_sensor" params="xyz pitch">
     <link name="camera_link">
@@ -270,7 +313,8 @@
   <xacro:lidar_sensor idx="Front_Right" xyz="0.05 -0.1 0.018" angle="-1.5707963267948966"/>
   <xacro:lidar_sensor idx="Front" xyz="0.15 0 0.018" angle="0"/>
   <xacro:lidar_sensor idx="Back" xyz="-0.15 0 0.018" angle="3.141592"/>
-  <xacro:camera_sensor xyz="-0.07 0 0.185" pitch="-0.1"/>
+  <xacro:lidar_sensor_lane idx="Front2" xyz="0.15 0 0.018" angle="0"/>
+  <xacro:camera_sensor xyz="0.6 0 1" pitch="1.57"/>
 
   <ros2_control name="GazeboSystem" type="system">
     <hardware>

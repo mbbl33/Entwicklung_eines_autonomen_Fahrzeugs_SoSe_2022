@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-class Region_of_Interest():
+class RegionOfInterest:
     def __init__(self, lower_x, lower_y, upper_x, height, max_width, min_width, step_size):
         self.lower_x = lower_x
         self.lower_y = lower_y
@@ -13,7 +13,7 @@ class Region_of_Interest():
         self.step_size = step_size
         self.current_w = self.min_width
 
-    def get_RoI(self, cv_img):
+    def get_roi(self, cv_img):
         img_height = cv_img.shape[0]
 
         # lower left
@@ -39,7 +39,7 @@ class Region_of_Interest():
         mask = np.zeros(cv_img.shape[:2], np.uint8)
         cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
 
-        return cv2.bitwise_and(cv_img, cv_img, mask=mask), pts
+        return cv2.bitwise_and(cv_img, cv_img, mask=mask)
 
     def increase_roi(self):
         if (self.current_w < self.max_width):
