@@ -15,7 +15,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from std_msgs.msg import Float64
-
+from std_msgs.msg import Float64MultiArray
 
 class LaneDetection(Node):
 
@@ -33,6 +33,8 @@ class LaneDetection(Node):
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.steer, 1)
 
+        self.subscription = self.create_subscription(Float64MultiArray, 'update_lane_detection', self.update_values, 1)
+
         # raw image with lines on it for debug
         self.pub_lane_img = self.create_publisher(Image, 'lane_image', 1)
 
@@ -43,6 +45,16 @@ class LaneDetection(Node):
         # simple steering
         self.publisher_steering = self.create_publisher(
             Float64, '/steering', 1)
+
+    def update_values(self, msg_in):
+        print(msg_in.data[0])
+        self.driveway_factor =  msg_in.data[0]
+        l_x = int(msg_in.data[1])
+        self.left_RoI.lower_x = l_x
+        self.left_RoI.upper_x = l_x
+        r_x = int(msg_in.data[2])
+        self.right_RoI.lower_x = r_x
+        self.right_RoI.upper_x = r_x
 
     def get_edges(self, cv_img):
         img_bw = ImgConverter.get_bw(cv_img)
@@ -77,6 +89,8 @@ class LaneDetection(Node):
         vectors_r = self.get_lines(img_edge, self.right_RoI)
         mid_of_lines = self.get_mid_x(vectors_l, vectors_r)
         drive_way = mid_of_lines * self.driveway_factor
+        #plt.imshow(img_croped)
+        #plt.show()
 
         if (self.debug):
             img_cv_all_lines = self.debug_draw_lines(img_croped, vectors_r, vectors_l, mid_of_lines, drive_way)
