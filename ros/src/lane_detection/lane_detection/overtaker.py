@@ -16,19 +16,20 @@ class Overtaker(Node):
         out = []
         msg_out = Float64MultiArray()
         if msg_in.range < 0.75 and self.left_lane_free:
-
-
-            out.append(0.75)
+            out.append(0.85)
             out.append(260.0)
             out.append(500.0)
+            msg_out.data = out
+            self.pubUpdateLD.publish(msg_out)
 
         else:
+            print("nop")
             #vorlaufig
-            out.append(1.25)
-            out.append(140.0)
-            out.append(380.0)
-        msg_out.data = out
-        self.pubUpdateLD.publish(msg_out)
+            #out.append(1.25)
+            #out.append(140.0)
+            #out.append(380.0)
+        #msg_out.data = out
+        #self.pubUpdateLD.publish(msg_out)
         print(msg_in.range)
 
     def look_left(self, msg):

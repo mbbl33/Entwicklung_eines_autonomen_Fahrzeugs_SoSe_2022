@@ -4,6 +4,8 @@ import rclpy
 import cv2
 import matplotlib.pylab as plt
 import numpy as np
+from threading import Thread
+import threading
 
 from .img_converter import ImgConverter
 from .region_of_interest import RegionOfInterest
@@ -33,6 +35,7 @@ class LaneDetection(Node):
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.steer, 1)
 
+        self.event = threading.Event()
         self.subscription = self.create_subscription(Float64MultiArray, 'update_lane_detection', self.update_values, 1)
 
         # raw image with lines on it for debug
@@ -49,6 +52,7 @@ class LaneDetection(Node):
     def update_values(self, msg_in):
         print(msg_in.data[0])
         self.driveway_factor =  msg_in.data[0]
+        self.event.wait(5)
         l_x = int(msg_in.data[1])
         self.left_RoI.lower_x = l_x
         self.left_RoI.upper_x = l_x
