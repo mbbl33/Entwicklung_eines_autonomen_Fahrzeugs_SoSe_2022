@@ -25,7 +25,7 @@ class RegionOfInterest:
         y2 = self.roi_height
 
         # upper right
-        x3 = self.upper_x + (self.current_w ) // 2
+        x3 = self.upper_x + (self.current_w) // 2
         y3 = self.roi_height
 
         # lower right
@@ -42,8 +42,11 @@ class RegionOfInterest:
         return cv2.bitwise_and(cv_img, cv_img, mask=mask)
 
     def increase_roi(self):
-        if (self.current_w < self.max_width):
+        if self.is_not_max():
             self.current_w += self.step_size
+
+    def is_not_max(self):
+        return self.current_w < self.max_width
 
     def reset_roi(self):
         self.current_w = self.min_width

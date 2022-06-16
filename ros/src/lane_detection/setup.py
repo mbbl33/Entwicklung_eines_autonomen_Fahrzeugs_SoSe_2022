@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'lane_detection = lane_detection.lane_detection:main',
+            'overtaker = lane_detection.overtaker:main'
         ],
     },
 )

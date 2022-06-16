@@ -20,8 +20,9 @@ from std_msgs.msg import Float64
 class LaneDetection(Node):
 
     def __init__(self):
-        super().__init__('image_converter')
+        super().__init__('lane_detection')
         self.debug = True
+        self.driveway_factor = 1.25
         self.x_left_lane = 140
         self.x_right_lane = 380
         max_roi = 100
@@ -59,7 +60,7 @@ class LaneDetection(Node):
                                   np.array([]),
                                   minLineLength=15,
                                   maxLineGap=50)
-            if out is None and roi.current_w < roi.max_width:
+            if out is None and roi.is_not_max():
                 roi.increase_roi()
             else:
                 if out is not None:
@@ -75,16 +76,15 @@ class LaneDetection(Node):
         vectors_l = self.get_lines(img_edge, self.left_RoI)
         vectors_r = self.get_lines(img_edge, self.right_RoI)
         mid_of_lines = self.get_mid_x(vectors_l, vectors_r)
-        #drive_way = mid_of_lines * 1.25
-        drive_way = mid_of_lines * 0.75
+        drive_way = mid_of_lines * self.driveway_factor
 
         if (self.debug):
             img_cv_all_lines = self.debug_draw_lines(img_croped, vectors_r, vectors_l, mid_of_lines, drive_way)
             msg_out = ImgConverter.get_ros_img(img_cv_all_lines)
             self.pub_lane_img.publish(msg_out)
             self.debug_rois(img_raw)
+
         return (img_croped, drive_way)
-        # self.steer(img_croped, drive_way)
 
     def steer(self, msg_in):
         analyzed = self.analyze(msg_in)
@@ -93,8 +93,8 @@ class LaneDetection(Node):
         steer = Float64()
         mid = img.shape[1] / 2
         dif = drive_way - mid
-        out = min(dif, 45)
-        out = max(out, -45)
+        dif = min(dif, 45)
+        out = max(dif, -45)
         steer.data = float(out)
         self.publisher_steering.publish(steer)
 
