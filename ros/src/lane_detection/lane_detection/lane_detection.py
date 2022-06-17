@@ -4,8 +4,6 @@ import rclpy
 import cv2
 import matplotlib.pylab as plt
 import numpy as np
-from threading import Thread
-import threading
 
 from .img_converter import ImgConverter
 from .region_of_interest import RegionOfInterest
@@ -17,7 +15,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from std_msgs.msg import Float64
-from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Bool
 
 class LaneDetection(Node):
 
@@ -32,11 +30,11 @@ class LaneDetection(Node):
         self.left_RoI = RegionOfInterest(self.x_left_lane, 0, self.x_left_lane, 0, max_roi, min_roi, 5)
         self.right_RoI = RegionOfInterest(self.x_right_lane, 0, self.x_right_lane, 0, max_roi, min_roi, 5)
 
+        self.shut_up = False
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.steer, 1)
 
-        self.event = threading.Event()
-        self.subscription = self.create_subscription(Float64MultiArray, 'update_lane_detection', self.update_values, 1)
+        self.subscription = self.create_subscription(Bool, 'stop_lane_based_steer', self.update_shut_up, 1)
 
         # raw image with lines on it for debug
         self.pub_lane_img = self.create_publisher(Image, 'lane_image', 1)
@@ -49,16 +47,9 @@ class LaneDetection(Node):
         self.publisher_steering = self.create_publisher(
             Float64, '/steering', 1)
 
-    def update_values(self, msg_in):
-        print(msg_in.data[0])
-        self.driveway_factor =  msg_in.data[0]
-        self.event.wait(5)
-        l_x = int(msg_in.data[1])
-        self.left_RoI.lower_x = l_x
-        self.left_RoI.upper_x = l_x
-        r_x = int(msg_in.data[2])
-        self.right_RoI.lower_x = r_x
-        self.right_RoI.upper_x = r_x
+    def update_shut_up(self, msg_in):
+        self.shut_up = msg_in.data
+        print("Halt dein Maul")
 
     def get_edges(self, cv_img):
         img_bw = ImgConverter.get_bw(cv_img)
@@ -105,6 +96,9 @@ class LaneDetection(Node):
         return (img_croped, drive_way)
 
     def steer(self, msg_in):
+        if self.shut_up:
+            return
+        print("nö mach tortz dem")
         analyzed = self.analyze(msg_in)
         img = analyzed[0]
         drive_way = analyzed[1]
