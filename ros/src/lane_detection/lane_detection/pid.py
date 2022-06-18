@@ -17,8 +17,7 @@ class PID_Controller():
 
         is_value = min(is_value, max_range)
         is_value = max(is_value , min_range)
-        error = should_value - min(is_value, max_range)
-
+        error = should_value - is_value
         #P
         p_error = self.p * error
         print("P", p_error)

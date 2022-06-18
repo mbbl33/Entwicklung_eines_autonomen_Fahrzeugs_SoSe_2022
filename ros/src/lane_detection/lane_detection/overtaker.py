@@ -4,6 +4,8 @@ from sensor_msgs.msg import Range
 from std_msgs.msg import Float64
 from std_msgs.msg import Bool
 from . import pid
+import time
+
 class Overtaker(Node):
     def __init__(self):
         super().__init__('overtaker')
@@ -14,8 +16,8 @@ class Overtaker(Node):
 
         self.pub_update_LD = self.create_publisher(Bool, 'stop_lane_based_steer', 1)
 
-        self.subLeft = self.create_subscription(Range , 'tof_Left', self.look_left, 1)
-        self.subRight = self.create_subscription(Range , 'tof_Right', self.update_right_dist, 1)
+        self.subLeft = self.create_subscription(Range , 'tof_Front_Left', self.look_left, 1)
+        self.subRight = self.create_subscription(Range , 'tof_Front_Right', self.update_right_dist, 1)
 
         self.right_dist = 0.0
         self.pid_controller = pid.PID_Controller(100, 0.001, 1, 45, -45, (1 / 5))
@@ -36,11 +38,8 @@ class Overtaker(Node):
             steer.data = -45.0
             print(steer)
             self.pub_steering.publish(steer)
-            should_value = 0.15
-            out = self.pid_controller.calc_pid(self.right_dist, should_value, 200, 0.1)
-            msg_out = Float64()
-            msg_out.data = float(out)
-            self.publisher_steering.publish(msg_out)
+            time.sleep(1.5)
+            self.overtaker_mode = True
 
         else:
             #out = Bool()
@@ -55,10 +54,18 @@ class Overtaker(Node):
         #self.pubUpdateLD.publish(msg_out)
         print(msg.range)
     def update_right_dist(self, msg):
-        self.right_dist = msg.range
+        print("overtaker mode:",self.overtaker_mode)
+        if not self.overtaker_mode:
+            return
+        should_value = 0.15
+        out = self.pid_controller.calc_pid(msg.range, should_value, msg.max_range, msg.min_range)
+        msg_out = Float64()
+        msg_out.data = float(-out)
+        self.pub_steering.publish(msg_out)
+
     def look_left(self, msg):
-        range = min( msg.max_range, msg.range)
-        self.left_lane_free = range < 0.5
+        self.left_lane_free = 0.5 < msg.range
+        print("left lane:", self.left_lane_free)
 
 
 
