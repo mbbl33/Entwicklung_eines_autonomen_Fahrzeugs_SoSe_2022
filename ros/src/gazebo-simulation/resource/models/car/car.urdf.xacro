@@ -47,7 +47,7 @@
 
 
   <material name="Red">
-    <color rgba="1.0 0 0 1.0"/>
+    <color rgba="1.0 0.7 1.0 1.0"/>
   </material>
 
 
@@ -95,6 +95,7 @@
       <mu2>0.7</mu2>
       <kd>1</kd>
       <kp>100000000</kp>
+      <material>Gazebo/Purple</material>
     </gazebo>
   </xacro:macro>
 
