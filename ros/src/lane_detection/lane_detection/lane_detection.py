@@ -96,10 +96,11 @@ class LaneDetection(Node):
         return (img_croped, drive_way)
 
     def steer(self, msg_in):
-        if self.shut_up:
-            return
+
         print("nö mach tortz dem")
         analyzed = self.analyze(msg_in)
+        if self.shut_up:
+            return
         img = analyzed[0]
         drive_way = analyzed[1]
         steer = Float64()

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.17)  13 JUN 2022 16:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.17)  22 JUN 2022 11:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -749,11 +749,7 @@ File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count339
 \l__pdf_internal_box=\box75
 )
-(AF.aux
-
-LaTeX Warning: Label `fig:roi' multiply defined.
-
-)
+(AF.aux)
 \openout1 = `AF.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 36.
@@ -945,79 +941,89 @@ Overfull \vbox (35.35295pt too high) detected at line 69
 [3
 
  <./img/vector_gerade.png>]
-<./img/vector_kurve.png, id=138, 657.45625pt x 510.90875pt>
+<./img/vector_zu_rechts.png, id=139, 939.51pt x 359.3425pt>
+File: ./img/vector_zu_rechts.png Graphic file (type png)
+<use ./img/vector_zu_rechts.png>
+Package pdftex.def Info: ./img/vector_zu_rechts.png  used on input line 81.
+(pdftex.def)             Requested size: 245.83282pt x 94.02449pt.
+ [4
+
+ <./img/vector_zu_rechts.png>]
+<./img/vector_kurve.png, id=169, 657.45625pt x 510.90875pt>
 File: ./img/vector_kurve.png Graphic file (type png)
 <use ./img/vector_kurve.png>
-Package pdftex.def Info: ./img/vector_kurve.png  used on input line 81.
+Package pdftex.def Info: ./img/vector_kurve.png  used on input line 93.
 (pdftex.def)             Requested size: 245.83282pt x 191.0368pt.
 
-Overfull \vbox (9.30542pt too high) detected at line 81
+Overfull \vbox (9.30542pt too high) detected at line 93
  []
 
-[4
+[5
 
  <./img/vector_kurve.png>]
-<./img/Y-Yeet.png, id=168, 289.08pt x 162.6075pt>
+<./img/Y-Yeet.png, id=199, 289.08pt x 162.6075pt>
 File: ./img/Y-Yeet.png Graphic file (type png)
 <use ./img/Y-Yeet.png>
-Package pdftex.def Info: ./img/Y-Yeet.png  used on input line 104.
+Package pdftex.def Info: ./img/Y-Yeet.png  used on input line 118.
 (pdftex.def)             Requested size: 153.64493pt x 86.42471pt.
- [5
+ [6
 
  <./img/Y-Yeet.png>]
-<./img/mittellinie.png, id=200, 216.81pt x 162.6075pt>
+<./img/mittellinie.png, id=231, 216.81pt x 162.6075pt>
 File: ./img/mittellinie.png Graphic file (type png)
 <use ./img/mittellinie.png>
-Package pdftex.def Info: ./img/mittellinie.png  used on input line 124.
+Package pdftex.def Info: ./img/mittellinie.png  used on input line 138.
 (pdftex.def)             Requested size: 153.64493pt x 115.23874pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 124
+LaTeX Font Info:    Trying to load font information for U+msa on input line 138
 .
 
 (/home/max/.miktex/texmfs/install/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 124
+LaTeX Font Info:    Trying to load font information for U+msb on input line 138
 .
 
 (/home/max/.miktex/texmfs/install/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
-ut line 124.
+ut line 138.
 
 (/home/max/.miktex/texmfs/install/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
 )
-[6
-
- <./img/mittellinie.png>]
-<./img/roi_breite.png, id=233, 108.405pt x 79.497pt>
-File: ./img/roi_breite.png Graphic file (type png)
-<use ./img/roi_breite.png>
-Package pdftex.def Info: ./img/roi_breite.png  used on input line 147.
-(pdftex.def)             Requested size: 153.64493pt x 112.68758pt.
-
-Overfull \vbox (13.05623pt too high) detected at line 147
- []
-
 [7
 
+ <./img/mittellinie.png>]
+<./img/roi_breite.png, id=265, 108.405pt x 79.497pt>
+File: ./img/roi_breite.png Graphic file (type png)
+<use ./img/roi_breite.png>
+Package pdftex.def Info: ./img/roi_breite.png  used on input line 161.
+(pdftex.def)             Requested size: 153.64493pt x 112.68758pt.
+
+Overfull \vbox (13.05623pt too high) detected at line 161
+ []
+
+[8
+
  <./img/roi_breite.png>]
-<./img/longneck.jpg, id=265, 803.0pt x 451.6875pt>
+<./img/longneck.jpg, id=297, 803.0pt x 451.6875pt>
 File: ./img/longneck.jpg Graphic file (type jpg)
 <use ./img/longneck.jpg>
-Package pdftex.def Info: ./img/longneck.jpg  used on input line 164.
+Package pdftex.def Info: ./img/longneck.jpg  used on input line 179.
 (pdftex.def)             Requested size: 153.64493pt x 86.42113pt.
-
-pdfTeX warning (ext4): destination with the same identifier (name{fig:roi}) has
- been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.164 \end{frame}
-                  [8
+ [9
 
  <./img/longneck.jpg>]
+<./img/topdown _view.png, id=327, 1926.19624pt x 422.57875pt>
+File: ./img/topdown _view.png Graphic file (type png)
+<use ./img/topdown _view.png>
+Package pdftex.def Info: ./img/topdown _view.png  used on input line 190.
+(pdftex.def)             Requested size: 307.28987pt x 67.41408pt.
+ [10
+
+ <./img/topdown _view.png>]
 \tf@nav=\write6
 \openout6 = `AF.nav'.
 
@@ -1028,17 +1034,14 @@ l.164 \end{frame}
 \openout8 = `AF.snm'.
 
  (AF.aux)
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `AF.out' has not changed.
-(rerunfilecheck)             Checksum: 2078EB184230E3C8BD2532FEF994F7F3;637.
+(rerunfilecheck)             Checksum: 0D5FF74C9CDB9BC3D9A03B3BC68D268D;637.
  ) 
 Here is how much of TeX's memory you used:
- 23069 strings out of 478615
- 453561 string characters out of 2848820
- 722562 words of memory out of 3000000
- 40702 multiletter control sequences out of 15000+600000
+ 23114 strings out of 478615
+ 454765 string characters out of 2848820
+ 722692 words of memory out of 3000000
+ 40738 multiletter control sequences out of 15000+600000
  476314 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,20n,122p,408b,691s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -1046,9 +1049,9 @@ Here is how much of TeX's memory you used:
 /home/max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss12.pfb></ho
 me/max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss8.pfb></home/m
 ax/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on AF.pdf (8 pages, 613402 bytes).
+Output written on AF.pdf (10 pages, 687787 bytes).
 PDF statistics:
- 320 PDF objects out of 1000 (max. 8388607)
- 26 named destinations out of 1000 (max. 500000)
- 138 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 384 PDF objects out of 1000 (max. 8388607)
+ 33 named destinations out of 1000 (max. 500000)
+ 148 words of extra memory for PDF output out of 10000 (max. 10000000)
 
