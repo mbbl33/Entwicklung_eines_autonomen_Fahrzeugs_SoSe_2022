@@ -1,8 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Range
-from std_msgs.msg import Float64
-from std_msgs.msg import Bool
+from std_msgs.msg import Float64, Bool, Int64MultiArray
 from . import pid
 import time
 
@@ -15,17 +14,27 @@ class Overtaker(Node):
         self.subFront2 = self.create_subscription(Range, '/tof_Front2', self.is_road_blocked, 1)
 
         self.pub_update_LD = self.create_publisher(Bool, 'stop_lane_based_steer', 1)
+        self.pub_adjust_RoI = self.create_publisher(Int64MultiArray, 'adjust_region_of_interest', 1)
+        self.pub_adjust_factor = self.create_publisher(Float64, 'adjust_driveway_factor', 1)
 
         self.subLeft = self.create_subscription(Range, 'tof_Front_Left', self.look_left, 1)
-        self.subRight = self.create_subscription(Range, 'tof_Front_Right', self.update_right_dist, 1)
+        self.subRight = self.create_subscription(Range, 'tof_Front_Right', self.look_right, 1)
 
         self.right_dist = 0.0
         self.pid_controller = pid.PID_Controller(100, 0.001, 1, 45, -45, (1 / 5))
+        
+        # speed sub
+        #self.sub_speed = self.create_subscription(Float64, '/speed', self.overtake, 1)
+
         # steering
         self.pub_steering = self.create_publisher(Float64, '/steering', 1)
+        self.pub_speed = self.create_publisher(Float64, '/speed', 1)
 
         self.overtaker_mode = False
         self.left_lane_free = True
+        self.right_lane_free = True
+
+        self.current_phase = 0
 
         #self.start_time = 0.0
 
@@ -33,7 +42,7 @@ class Overtaker(Node):
 
     def is_road_blocked(self, msg):
         range = min(msg.max_range, msg.range)
-        if range < 0.75 and self.left_lane_free:
+        if range < 2 and self.left_lane_free and self.current_phase == 0:
             # shut up lane detection
             out = Bool()
             out.data = True
@@ -41,37 +50,89 @@ class Overtaker(Node):
 
             #self.start_time = time.time()
             self.overtaker_mode = True
+            print("---INITITATE OVERTAKE---")
+            self.current_phase = 1
+            print("---SET CURRENT PHASE TO 1---")
         else:
+            self.overtake()
             print("nop")
 
+    def overtake(self):
+        # Phase 1 - Switch Lanes
+        if self.overtaker_mode == True:
+            if self.current_phase == 1:
+                out = Float64()
+                out.data = 0.2
+                self.pub_speed.publish(out) # SUBJECT TO CHANGE - Hardcoded speed
+                out.data = -15.0
+                self.pub_steering.publish(out)
+                time.sleep(3.33) # SUBJECT TO CHANGE - Hardcoded Speed
+                out.data = 15.0
+                self.pub_steering.publish(out)
+                time.sleep(3.33) # SUBJECT TO CHANGE - Hardcoded Speed
+                out.data = 0.0
+                self.pub_steering.publish(out)
+                self.current_phase = 2
+                print("---SET CURRENT PHASE TO 2---")
+            # Phase 2 - Switch RoI and Hold Lane
+            elif self.current_phase == 2:
+                new_roi_msg = Int64MultiArray()
+                new_roi_msg.data = [ 280, 500, 100, 40 ]
+                new_factor_msg = Float64()
+                new_factor_msg.data = 0.75
+                self.pub_adjust_RoI.publish(new_roi_msg)
+                self.pub_adjust_factor.publish(new_factor_msg)
+                msg_ld = Bool()
+                msg_ld.data = False
+                #self.pub_update_LD.publish(msg_ld) SUBJECT TO CHANGE - Switch Lane_Detection
+                if self.right_lane_free == False:
+                    self.current_phase = 3
+                    print("---SET CURRENT PHASE TO 3---")
+            # Phase 3 - Look Right to check for box
+            elif self.current_phase == 3:
+                if self.right_lane_free == True:
+                    self.current_phase = 4
+                    print("---SET CURRENT PHASE TO 4---")
+            # Phase 4 - Hold Lane when box is gone
+            elif self.current_phase == 4:
+                msg_ld = Bool()
+                msg_ld.data = True
+                self.pub_update_LD.publish(msg_ld)
+                new_roi_msg = Int64MultiArray()
+                new_roi_msg.data = [ 140, 380, 100, 40 ]
+                new_factor_msg = Float64()
+                new_factor_msg.data = 1.25
+                self.pub_adjust_RoI.publish(new_roi_msg)
+                self.pub_adjust_factor.publish(new_factor_msg)
+                self.current_phase = 5
+                print("---SET CURRENT PHASE TO 5---")
+            # Phase 5 - Switch Lanes back
+            elif self.current_phase == 5:
+                out = Float64()
+                out.data = 15.0
+                self.pub_steering.publish(out)
+                time.sleep(3.33)
+                out.data = -15.0
+                self.pub_steering.publish(out)
+                time.sleep(3.33)
+                out.data = 0.0
+                self.pub_steering.publish(out)
+                msg_ld = Bool()
+                msg_ld.data = False
+                self.pub_update_LD.publish(msg_ld)
+                self.overtaker_mode = False
+                print("---OVERTAKE COMPLETE---")
+            else:
+                return
 
-    def update_right_dist(self, msg):
-        print("overtaker mode:", self.overtaker_mode)
-        if not self.overtaker_mode:
-            return
-        elif self.overtaker_mode and msg.max_range <= msg.range:
-            steer = Float64()
-            steer.data = -15.0
-            print(steer)
-            self.pub_steering.publish(steer)
-        else:
-            # should_value = 0.12
-            # out = self.pid_controller.calc_pid(msg.range, should_value, msg.max_range, msg.min_range)
-            # msg_out = Float64()
-            # msg_out.data = float(-out)
-            # self.pub_steering.publish(msg_out)
-            # print(self.start_time, " ", self.delay, "   ", time.time())
-
-        if self.start_time + self.delay < time.time():
-            self.overtaker_mode = False
-            lane_out = Bool()
-            lane_out.data = False
-            self.pub_update_LD.publish(lane_out)
-        print(msg.range)
 
     def look_left(self, msg):
         self.left_lane_free = 0.5 < msg.range
         print("left lane:", self.left_lane_free)
+
+    def look_right(self, msg):
+        self.right_lane_free = 0.5 < msg.range
+        print("right lane:", self.right_lane_free)
 
 
 def main(args=None):
