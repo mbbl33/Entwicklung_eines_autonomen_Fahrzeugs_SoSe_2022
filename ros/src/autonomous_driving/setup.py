@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'lane_detection'
+package_name = 'autonomous_driving'
 
 setup(
     name=package_name,
@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'lane_detection = lane_detection.lane_detection:main',
-            'overtaker = lane_detection.overtaker:main'
+            'autonomous_driving = autonomous_driving.lane_based_steer:main',
+            'overtaker = autonomous_driving.overtaker:main'
         ],
     },
 )

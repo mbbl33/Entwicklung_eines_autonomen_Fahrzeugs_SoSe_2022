@@ -17,10 +17,11 @@ from cv_bridge import CvBridge
 from std_msgs.msg import Float64, Int64MultiArray
 from std_msgs.msg import Bool
 
-class LaneDetection(Node):
+
+class LaneBasedSteer(Node):
 
     def __init__(self):
-        super().__init__('lane_detection')
+        super().__init__('lane_based_steer')
         self.debug = True
         self.driveway_factor = 1.25
         self.x_left_lane = 140
@@ -34,6 +35,7 @@ class LaneDetection(Node):
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.steer, 1)
 
+        # for overtaker
         self.subscription = self.create_subscription(Bool, 'stop_lane_based_steer', self.update_shut_up, 1)
         self.subscription = self.create_subscription(Int64MultiArray, 'adjust_region_of_interest', self.update_roi, 1)
         self.subscription = self.create_subscription(Float64, 'adjust_driveway_factor', self.update_driveway_factor, 1)
@@ -95,8 +97,8 @@ class LaneDetection(Node):
         vectors_r = self.get_lines(img_edge, self.right_RoI)
         mid_of_lines = self.get_mid_x(vectors_l, vectors_r)
         drive_way = mid_of_lines * self.driveway_factor
-        #plt.imshow(img_croped)
-        #plt.show()
+        # plt.imshow(img_croped)
+        # plt.show()
 
         if (self.debug):
             img_cv_all_lines = self.debug_draw_lines(img_croped, vectors_r, vectors_l, mid_of_lines, drive_way)
@@ -138,8 +140,9 @@ class LaneDetection(Node):
         return out
 
     ######### for Debug
+
+    # pub rois on img for debug
     def debug_rois(self, img):
-        # pub rois on img for debug
         outL = self.left_RoI.get_roi(img)
         outR = self.right_RoI.get_roi(img)
         msgOut = ImgConverter.get_ros_img(outL)
@@ -176,7 +179,7 @@ class LaneDetection(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    lane_detection = LaneDetection()
+    lane_detection = LaneBasedSteer()
     rclpy.spin(lane_detection)
     lane_detection.destroy_node()
     rclpy.shutdown()
