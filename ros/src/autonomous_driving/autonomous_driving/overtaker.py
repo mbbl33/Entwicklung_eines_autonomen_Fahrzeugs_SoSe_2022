@@ -40,13 +40,12 @@ class Overtaker(Node):
     def is_road_blocked(self, msg):
         range = min(msg.max_range, msg.range)
         if range < 2 and self.left_lane_free and self.current_phase == 0:
+
             # shut up lane detection
             out = Bool()
             out.data = True
             self.pub_update_LD.publish(out)
 
-            # self.start_time = time.time()
-            self.overtaker_mode = True
             print("---INITITATE OVERTAKE---")
             self.current_phase = 1
             print("---SET CURRENT PHASE TO 1---")
@@ -56,72 +55,71 @@ class Overtaker(Node):
 
     def overtake(self):
         # Phase 1 - Switch Lanes
-        if self.overtaker_mode == True:
-            match self.current_phase:
-                case 1:
-                    out = Float64()
-                    out.data = -25.0
-                    self.pub_steering.publish(out)
-                    self.lc_time = self.calc_lc_time()
-                    time.sleep(self.lc_time * 0.9)
-                    out.data = 25.0
-                    self.pub_steering.publish(out)
-                    time.sleep(self.lc_time * 0.9)
-                    out.data = 0.0
-                    self.pub_steering.publish(out)
-                    self.current_phase = 2
-                    print("---SET CURRENT PHASE TO 2---")
-                # Phase 2 - Switch RoI and Hold Lane
-                case 2:
-                    new_roi_msg = Int64MultiArray()
-                    new_roi_msg.data = [260, 500, 100, 40]
-                    new_factor_msg = Float64()
-                    new_factor_msg.data = 0.85
-                    self.pub_adjust_RoI.publish(new_roi_msg)
-                    self.pub_adjust_factor.publish(new_factor_msg)
-                    msg_ld = Bool()
-                    msg_ld.data = False
-                    self.pub_update_LD.publish(msg_ld)
-                    if self.right_lane_free == False:
-                        self.current_phase = 3
-                        print("---SET CURRENT PHASE TO 3---")
-                # Phase 3 - Look Right to check for box
-                case 3:
-                    if self.right_lane_free == True:
-                        self.current_phase = 4
-                        print("---SET CURRENT PHASE TO 4---")
-                # Phase 4 - Hold Lane when box is gone
-                case 4:
-                    msg_ld = Bool()
-                    msg_ld.data = True
-                    self.pub_update_LD.publish(msg_ld)
-                    new_roi_msg = Int64MultiArray()
-                    new_roi_msg.data = [140, 380, 100, 40]
-                    new_factor_msg = Float64()
-                    new_factor_msg.data = 1.25
-                    self.pub_adjust_RoI.publish(new_roi_msg)
-                    self.pub_adjust_factor.publish(new_factor_msg)
-                    self.current_phase = 5
-                    print("---SET CURRENT PHASE TO 5---")
-                # Phase 5 - Switch Lanes back
-                case 5:
-                    out = Float64()
-                    out.data = 25.0
-                    self.pub_steering.publish(out)
-                    self.lc_time = self.calc_lc_time()
-                    time.sleep(self.lc_time * 0.9)
-                    out.data = -25.0
-                    self.pub_steering.publish(out)
-                    time.sleep(self.lc_time * 0.9)
-                    out.data = 0.0
-                    self.pub_steering.publish(out)
-                    msg_ld = Bool()
-                    msg_ld.data = False
-                    self.pub_update_LD.publish(msg_ld)
-                    self.overtaker_mode = False
-                    print("---OVERTAKE COMPLETE---")
-                case _:
-                    return
+        match self.current_phase:
+            case 1:
+                out = Float64()
+                out.data = -25.0
+                self.pub_steering.publish(out)
+                self.lc_time = self.calc_lc_time()
+                time.sleep(self.lc_time * 0.9)
+                out.data = 25.0
+                self.pub_steering.publish(out)
+                time.sleep(self.lc_time * 0.9)
+                out.data = 0.0
+                self.pub_steering.publish(out)
+                self.current_phase = 2
+                print("---SET CURRENT PHASE TO 2---")
+            # Phase 2 - Switch RoI and Hold Lane
+            case 2:
+                new_roi_msg = Int64MultiArray()
+                new_roi_msg.data = [260, 500, 100, 40]
+                new_factor_msg = Float64()
+                new_factor_msg.data = 0.85
+                self.pub_adjust_RoI.publish(new_roi_msg)
+                self.pub_adjust_factor.publish(new_factor_msg)
+                msg_ld = Bool()
+                msg_ld.data = False
+                self.pub_update_LD.publish(msg_ld)
+                if self.right_lane_free == False:
+                    self.current_phase = 3
+                    print("---SET CURRENT PHASE TO 3---")
+            # Phase 3 - Look Right to check for box
+            case 3:
+                if self.right_lane_free == True:
+                    self.current_phase = 4
+                    print("---SET CURRENT PHASE TO 4---")
+            # Phase 4 - Hold Lane when box is gone
+            case 4:
+                msg_ld = Bool()
+                msg_ld.data = True
+                self.pub_update_LD.publish(msg_ld)
+                new_roi_msg = Int64MultiArray()
+                new_roi_msg.data = [140, 380, 100, 40]
+                new_factor_msg = Float64()
+                new_factor_msg.data = 1.25
+                self.pub_adjust_RoI.publish(new_roi_msg)
+                self.pub_adjust_factor.publish(new_factor_msg)
+                self.current_phase = 5
+                print("---SET CURRENT PHASE TO 5---")
+            # Phase 5 - Switch Lanes back
+            case 5:
+                out = Float64()
+                out.data = 25.0
+                self.pub_steering.publish(out)
+                self.lc_time = self.calc_lc_time()
+                time.sleep(self.lc_time * 0.9)
+                out.data = -25.0
+                self.pub_steering.publish(out)
+                time.sleep(self.lc_time * 0.9)
+                out.data = 0.0
+                self.pub_steering.publish(out)
+                msg_ld = Bool()
+                msg_ld.data = False
+                self.pub_update_LD.publish(msg_ld)
+                self.overtaker_mode = False
+                print("---OVERTAKE COMPLETE---")
+            case _:
+                return
 
     def calc_lc_time(self):
         gamma = 1.57079  # 90 degrees in rad
