@@ -36,170 +36,210 @@
 \date{}
 
 \begin{document}
-\begin{frame}
-\titlepage
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.40\textwidth]{"./img/Auto"}
-\label{fig:Auto}
-\end{figure}
-\end{center}
-\end{frame}
 
-\begin{frame}
-\frametitle{Inhalt}
-\tableofcontents
-\end{frame}
+	\begin{frame}
+		\titlepage
+			\begin{center}
+				\begin{figure}[h]
+					\includegraphics[width=0.40\textwidth]{"./img/Auto"}
+					\label{fig:Auto}
+				\end{figure}
+			\end{center}
+	\end{frame}
 
-\section{Linienerkennung und Lenkung}
-\subsection{Erste \glqq naive\grqq Idee und Probleme}
+	\begin{frame}
+		\frametitle{Inhalt}
+		\tableofcontents
+	\end{frame}
 
-\begin{frame}
-\frametitle{Erste \glqq naive\grqq  Idee}
-Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand dessen Lenkwinkel bestimmen
-\begin{center}
+	\section{Linienerkennung und Lenkung}
+	
+	\subsection{Erste \glqq naive\grqq Idee und Probleme}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.80\textwidth]{"./img/vector_gerade"}
-\caption{Erster Gedanke}
-\label{fig:Lenkung via Vektoren in Gerade}
-\end{figure}
+	\begin{frame}
+		\frametitle{Erste \glqq naive\grqq  Idee}
+		Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand dessen Lenkwinkel bestimmen
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.80\textwidth]{"./img/vector_gerade"}
+				\caption{Erster Gedanke}
+				\label{fig:Lenkung via Vektoren in Gerade}
+			\end{figure}
+		\end{center}
+	\end{frame}
 
-\end{center}
-\end{frame}
+	\begin{frame}
+		\frametitle{Problem}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.80\textwidth]{"./img/vector_zu_rechts"}
+				\caption{Problem wenn zu weit rechts}
+				\label{fig:Lenkung via Vektoren zu weit rechts}
+			\end{figure}
+		\end{center}
+	\end{frame}
 
-\begin{frame}
-\frametitle{Problem}
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.80\textwidth]{"./img/vector_zu_rechts"}
-\caption{Problem wenn zu weit rechts}
-\label{fig:Lenkung via Vektoren zu weit rechts}
-\end{figure}
-\end{center}
-\end{frame}
-
-\begin{frame}
-\frametitle{Problem}
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.80\textwidth]{"./img/vector_kurve"}
-\caption{Problem in der Kurve}
-\label{fig:Lenkung via Vektoren in Kurve}
-\end{figure}
-\end{center}
-\end{frame}
+	\begin{frame}
+		\frametitle{Problem}
+			\begin{center}
+				\begin{figure}[h]
+					\includegraphics[width=0.80\textwidth]{"./img/vector_kurve"}
+					\caption{Problem in der Kurve}
+					\label{fig:Lenkung via Vektoren in Kurve}
+				\end{figure}
+			\end{center}
+	\end{frame}
 
 
 
-\subsection{Weiterentwicklung der ersten Idee}
+	\subsection{Weiterentwicklung der ersten Idee}
 
-\begin{frame}
+	\begin{frame}
+		\frametitle{Wer brauch Y?}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.50\textwidth]{"./img/Y-Yeet"}
+				\label{fig:Weg mit dem Y}
+			\end{figure}
+		\end{center}
 
-\frametitle{Wer brauch Y?}
+		\begin{itemize}
+			\item Erkenntinis: wir brauchen nur X-Koordinaten um Mitte der Linien 		zubestimmen
+			\item Anhand des \glqq Durschnitts-X\grqq  und der Bildmitte/Automitte wissen wir in welche richtung wir müssen. 
+			\item Wie weiter die beiden X-Koordinaten getrennt sind um so stärker müssen wir lenken 
+		\end{itemize}
+	\end{frame}
 
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.50\textwidth]{"./img/Y-Yeet"}
-
-\label{fig:Weg mit dem Y}
-\end{figure}
-\end{center}
-
-\begin{itemize}
-\item Erkenntinis: wir brauchen nur X-Koordinaten um Mitte der Linien zubestimmen
-\item Anhand des \glqq Durschnitts-X\grqq  und der Bildmitte/Automitte wissen wir in welche richtung wir müssen. 
-\item Wie weiter die beiden X-Koordinaten getrennt sind um so stärker müssen wir lenken 
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}
-
-\frametitle{Probleme mit Mittellinie}
-
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.50\textwidth]{"./img/mittellinie"}
-\label{fig:Mittellinie}
-\end{figure}
-\end{center}
-
-\begin{itemize}
-\item Houghline zu empfindlich $\Rightarrow$ zuviel \glqq Beifang\grqq 
-\item Houghline zu grob $\Rightarrow$ Probleme bei Kurven
-\item einfach Aussenlinie nehmen und 1,25x des Durschnitts-X als Soll-Fahrbahn
-\end{itemize}
-
-\end{frame}
+	\begin{frame}
+		\frametitle{Probleme mit Mittellinie}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.50\textwidth]{"./img/mittellinie"}
+				\label{fig:Mittellinie}
+			\end{figure}
+		\end{center}
+		
+		\begin{itemize}
+			\item Houghline zu empfindlich $\Rightarrow$ zuviel \glqq Beifang\grqq 
+			\item Houghline zu grob $\Rightarrow$ Probleme bei Kurven
+			\item einfach Aussenlinie nehmen und 1,25x des Durschnitts-X als Soll-Fahrbahn
+		\end{itemize}
+	\end{frame}
 
 
-\subsection{Lenkwinkelbestimmung}
-\begin{frame}
+	\subsection{Lenkwinkelbestimmung}
+	
+	\begin{frame}
+		\frametitle{"Discopumper-Algorithmus" für Region-of-Interest}
+		\begin{itemize}
+			\item roi bekommt festen Startbereich
+			\item wir nehmen erstmal alles was wir bekommen an X-Koordinaten
+			\item wenn wir nichts finden müssen wir breiter werden
+			\item wenn wir immer noch nichts finden nehmen wir das letzte was wir hatten
+		\end{itemize}
 
-\frametitle{"Discopumper-Algorithmus" für Region-of-Interest}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.50\textwidth]{"./img/roi_breite"}
+				\label{fig:roi}
+				\caption{Unterschiedlich große roi}
+			\end{figure}
+		\end{center}
+	\end{frame}
 
-\begin{itemize}
-\item roi bekommt festen Startbereich
-\item wir nehmen erstmal alles was wir bekommen an X-Koordinaten
-\item wenn wir nichts finden müssen wir breiter werden
-\item wenn wir immer noch nichts finden nehmen wir das letzte was wir hatten
-\end{itemize}
-
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.50\textwidth]{"./img/roi_breite"}
-\label{fig:roi}
-\caption{Unterschiedlich große roi}
-\end{figure}
-\end{center}
-
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Verbesserung durch Top-Down view}
-
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.50\textwidth]{"./img/longneck"}
-\label{fig:longneck}
-\end{figure}
-\end{center}
-
-\begin{itemize}
-\item opimierung durch Top-Down view
-\item Kamera ist vor Auto und schaut nach unten
-\item könnte realistischer werden, durch Bildtransformation zu einem "pseudo" Top-Down 
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Top-Down View}
-	\begin{center}
-		\begin{figure}[h]
-			\centering
-			\includegraphics[width=\textwidth]{"./img/topdown _view"}
-			\label{fig:topdown}
-		\end{figure}
-	\end{center}
+	\begin{frame}
+		\frametitle{Verbesserung durch Top-Down-View}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.50\textwidth]{"./img/longneck"}
+				\label{fig:longneck}
+			\end{figure}
+		\end{center}
 
 	\begin{itemize}
-		\item \colorbox{red}{rechte Linie}
-		\item \colorbox{violet}{errechnete Mittellinie}
-		\item \colorbox{white}{\color{black}{Bildmitte $\Rightarrow$ Automitte}}
-		\item \colorbox{blue}{1.25-Fache der Bildmitte $\Rightarrow$ Soll-Fahrbahn}
+		\item opimierung durch Top-Down-View
+		\item Kamera schaut senkrecht vor dem Auto nach unten
+		\item könnte realistischer werden, durch Bildtransformation zu einem "pseudo" Top-Down 
 	\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Top-Down-View}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=\textwidth]{"./img/topdown _view"}
+				\label{fig:topdown}
+			\end{figure}
+		\end{center}
+
+		\begin{itemize}
+			\item \colorbox{red}{linke Linie}
+			\item \colorbox{green}{rechte Linie}
+			\item \colorbox{violet}{errechnete Mittellinie}
+			\item \colorbox{white}{\color{black}{Bildmitte $	\Leftrightarrow$ Automitte}}
+			\item \colorbox{blue}{1.25-Fache der Mittellinie $\Rightarrow$ Soll-Fahrbahn}
+		\end{itemize}
 	$\Rightarrow$ $\text{Lenkwinkel} = \text{SollFahrbahn}_X - \text{Bildmitte}_X$
-
-\end{frame}
-
+	\end{frame}
+	
+	
+	\section{Überholmanöver}
+	
+	\subsection{Einleitung des Manövers}
+	
+	\begin{frame}
+		\frametitle{Einleitung des Manövers}
+		\begin{itemize}
+			\item schmaler ToF-Sensor an Front
+			\item erkennt an Schwellenwert ob ein Überholmanöver nötig ist
+			\item links breiter ToF für 'Schulterblick'
+			\item Schulterblick ok $\Rightarrow$ starte mit Phase 1 und blockiere zunächst die linienbasierte Lenkung
+		\end{itemize}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.5\textwidth]{"./img/tof_sensoren"}
+				\label{fig:topdown}
+			\end{figure}
+		\end{center}
+	\end{frame}
+	
+	\subsection{5 Phasen des Manövers}
+	
+	\begin{frame}
+		\frametitle{1.Phase Spurwechsel}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.5\textwidth]{"./img/ueberholen"}
+				\label{fig:topdown}
+			\end{figure}
+		\end{center}
+		\begin{itemize}
+			\item Spurwechsel sei vereinfacht eine Gerade
+			\item \colorbox{red}{Überholgerade}
+			\item \colorbox{green}{Spurwechseldistanz}
+			\item $\beta$ = Lenkwinkel
+		\end{itemize}
+		aus Strecke c und Geschwindigkeit $\Rightarrow$  dauer des Spurwechsel
+	\end{frame}
+	
+	\begin{frame}
+		\frametitle{2.Phase RoI-Wechsel + Warten auf die zu überholende Box}
+		\begin{itemize}
+			\item versetzen der RoI für Lane Detection
+			\item setzen eines neuen Faktors für Soll-Fahrbahn
+			\item starte wieder die linienbasierte Lenkung
+			\item warten bis rechts die Box ist
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+		\frametitle{Phasen 3 bis 5}
+		\begin{enumerate}
+			\setcounter{enumi}{2}
+			\item Wagen auf der linken Spur und wartet bis er an Box vorbei ist
+			\item Spiegelverkehrt zu Phase 2 wechsel der RoI
+			\item Spiegelverkehrt zu Phase 1 Spurwechsel zurück
+		\end{enumerate}
+	\end{frame}
+	
 \end{document}
