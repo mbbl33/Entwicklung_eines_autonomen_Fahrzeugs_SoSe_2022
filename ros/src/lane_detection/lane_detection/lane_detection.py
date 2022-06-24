@@ -30,6 +30,7 @@ class LaneDetection(Node):
         self.left_RoI = self.set_roi(self.x_left_lane, self.x_left_lane, max_roi, min_roi)
         self.right_RoI = self.set_roi(self.x_right_lane, self.x_right_lane, max_roi, min_roi)
         self.shut_up = False
+
         # /camera/image_raw [sensor_msgs/msg/Image]
         self.subscription = self.create_subscription(Image, '/camera/image_raw', self.steer, 1)
 
@@ -53,7 +54,6 @@ class LaneDetection(Node):
 
     def update_shut_up(self, msg_in):
         self.shut_up = msg_in.data
-        print("Halt dein Maul")
 
     def update_roi(self, msg_in):
         self.left_RoI = self.set_roi(msg_in.data[0], msg_in.data[0], msg_in.data[2], msg_in.data[3])
@@ -107,8 +107,6 @@ class LaneDetection(Node):
         return (img_croped, drive_way)
 
     def steer(self, msg_in):
-
-        print("nö mach tortz dem")
         analyzed = self.analyze(msg_in)
         if self.shut_up:
             return

@@ -2,3 +2,4 @@
 \beamer@sectionintoc {1}{Linienerkennung und Lenkung}{3}{0}{1}
 \beamer@subsectionintoc {1}{1}{Erste \glqq naive\grqq Idee und Probleme}{3}{0}{1}
 \beamer@subsectionintoc {1}{2}{Weiterentwicklung der ersten Idee}{6}{0}{1}
+\beamer@subsectionintoc {1}{3}{Lenkwinkelbestimmung}{8}{0}{1}

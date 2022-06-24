@@ -27,6 +27,8 @@
 \usepackage[ngerman]{babel}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{xcolor}
+
 
 \title[]{Entwicklung eines autonomen Fahrzeugs}
 \author{Sven Thomas \& Maximilian Biebl}
@@ -110,8 +112,8 @@ Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand de
 \end{center}
 
 \begin{itemize}
-\item Erkenntinis: wir brauchen nur X-Koordinaten um Mitte zubestimmen
-\item Anhand des \glqq Durschnitts-X\grqq  und der Bildmitte wissen wir in welche richtung wir müssen. 
+\item Erkenntinis: wir brauchen nur X-Koordinaten um Mitte der Linien zubestimmen
+\item Anhand des \glqq Durschnitts-X\grqq  und der Bildmitte/Automitte wissen wir in welche richtung wir müssen. 
 \item Wie weiter die beiden X-Koordinaten getrennt sind um so stärker müssen wir lenken 
 \end{itemize}
 
@@ -137,9 +139,11 @@ Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand de
 
 \end{frame}
 
+
+\subsection{Lenkwinkelbestimmung}
 \begin{frame}
 
-\frametitle{Discopumper-Algorithmus für region of interest}
+\frametitle{"Discopumper-Algorithmus" für Region-of-Interest}
 
 \begin{itemize}
 \item roi bekommt festen Startbereich
@@ -161,7 +165,7 @@ Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand de
 \end{frame}
 
 \begin{frame}
-\frametitle{Verbesserung durch Top-down view}
+\frametitle{Verbesserung durch Top-Down view}
 
 \begin{center}
 \begin{figure}[h]
@@ -172,20 +176,30 @@ Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand de
 \end{center}
 
 \begin{itemize}
-\item opimierung durch Top-down view
+\item opimierung durch Top-Down view
 \item Kamera ist vor Auto und schaut nach unten
-\item könnte realistischer werden, durch Bildtransformation zu einer "pseudo" Top-down 
+\item könnte realistischer werden, durch Bildtransformation zu einem "pseudo" Top-Down 
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Top-down View}
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{"./img/topdown _view"}
-\label{fig:topdown}
-\end{figure}
-\end{center}
+	\frametitle{Top-Down View}
+	\begin{center}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=\textwidth]{"./img/topdown _view"}
+			\label{fig:topdown}
+		\end{figure}
+	\end{center}
+
+	\begin{itemize}
+		\item \colorbox{red}{rechte Linie}
+		\item \colorbox{violet}{errechnete Mittellinie}
+		\item \colorbox{white}{\color{black}{Bildmitte $\Rightarrow$ Automitte}}
+		\item \colorbox{blue}{1.25-Fache der Bildmitte $\Rightarrow$ Soll-Fahrbahn}
+	\end{itemize}
+	$\Rightarrow$ $\text{Lenkwinkel} = \text{SollFahrbahn}_X - \text{Bildmitte}_X$
+
 \end{frame}
+
 \end{document}
