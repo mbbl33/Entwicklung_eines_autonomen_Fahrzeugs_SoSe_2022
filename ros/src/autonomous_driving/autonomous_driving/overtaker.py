@@ -42,7 +42,7 @@ class Overtaker(Node):
         self.sub_block_overtaker = self.create_subscription(Bool, 'block_lane_based_steer', self.update_self_blocked, 1)
 
     def update_self_blocked(self, msg_in):
-        self.bolcked = msg_in.data
+        self.blocked = msg_in.data
 
     def is_road_blocked(self, msg):
         range = min(msg.max_range, msg.range)
