@@ -26,19 +26,22 @@ class LaneBasedSteer(Node):
         self.driveway_factor = 1.25
         self.x_left_lane = 140
         self.x_right_lane = 380
+        self.blocked = False
         max_roi = 100
         min_roi = 40
         self.left_RoI = self.set_roi(self.x_left_lane, self.x_left_lane, max_roi, min_roi)
         self.right_RoI = self.set_roi(self.x_right_lane, self.x_right_lane, max_roi, min_roi)
-        self.shut_up = False
 
         # /camera/image_raw [sensor_msgs/msg/Image]
-        self.subscription = self.create_subscription(Image, '/camera/image_raw', self.steer, 1)
+        self.sub_camera = self.create_subscription(Image, '/camera/image_raw', self.steer, 1)
+
+        # for overtaker and parking
+        self.sub_block_lbs = self.create_subscription(Bool, 'block_lane_based_steer', self.update_blocked, 1)
 
         # for overtaker
-        self.subscription = self.create_subscription(Bool, 'stop_lane_based_steer', self.update_shut_up, 1)
-        self.subscription = self.create_subscription(Int64MultiArray, 'adjust_region_of_interest', self.update_roi, 1)
-        self.subscription = self.create_subscription(Float64, 'adjust_driveway_factor', self.update_driveway_factor, 1)
+        self.sub_adjust_roi = self.create_subscription(Int64MultiArray, 'adjust_region_of_interest', self.update_roi, 1)
+        self.sub_adjust_driveway = self.create_subscription(Float64, 'adjust_driveway_factor', self.update_driveway_factor,
+                                                        1)
 
         # raw image with lines on it for debug
         self.pub_lane_img = self.create_publisher(Image, 'lane_image', 1)
@@ -48,14 +51,14 @@ class LaneBasedSteer(Node):
         self.pub_roi_right = self.create_publisher(Image, 'right_roi', 1)
 
         # simple steering
-        self.publisher_steering = self.create_publisher(
+        self.pub_steering = self.create_publisher(
             Float64, '/steering', 1)
 
     def set_roi(self, x_lower, x_upper, max_width, min_width):
         return RegionOfInterest(x_lower, 0, x_upper, 0, max_width, min_width, 5)
 
-    def update_shut_up(self, msg_in):
-        self.shut_up = msg_in.data
+    def update_blocked(self, msg_in):
+        self.blocked = msg_in.data
 
     def update_roi(self, msg_in):
         self.left_RoI = self.set_roi(msg_in.data[0], msg_in.data[0], msg_in.data[2], msg_in.data[3])
@@ -110,7 +113,7 @@ class LaneBasedSteer(Node):
 
     def steer(self, msg_in):
         analyzed = self.analyze(msg_in)
-        if self.shut_up:
+        if self.blocked:
             return
         img = analyzed[0]
         drive_way = analyzed[1]
@@ -120,7 +123,7 @@ class LaneBasedSteer(Node):
         dif = min(dif, 45)
         out = max(dif, -45)
         steer.data = float(out)
-        self.publisher_steering.publish(steer)
+        self.pub_steering.publish(steer)
 
     def get_mid_x(self, l_vectors, r_vectors):
         self.x_left_lane = self.calc_average_x(l_vectors, self.x_left_lane)

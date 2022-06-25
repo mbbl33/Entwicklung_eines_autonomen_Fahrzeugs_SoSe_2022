@@ -21,7 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'autonomous_driving = autonomous_driving.lane_based_steer:main',
-            'overtaker = autonomous_driving.overtaker:main'
+            'overtaker = autonomous_driving.overtaker:main',
+            'parker = autonomous_driving.parker:main'
         ],
     },
 )
