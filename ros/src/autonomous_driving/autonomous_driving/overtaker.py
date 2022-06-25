@@ -39,14 +39,14 @@ class Overtaker(Node):
                                                        1)
 
         # for praking mode
-        self.sub_block_overtaker = self.creat_subscription(Bool, 'block_lane_based_steer', self.update_self_blocked, 1)
+        self.sub_block_overtaker = self.create_subscription(Bool, 'block_lane_based_steer', self.update_self_blocked, 1)
 
     def update_self_blocked(self, msg_in):
         self.bolcked = msg_in.data
 
     def is_road_blocked(self, msg):
         range = min(msg.max_range, msg.range)
-        if range < 2 and self.left_lane_free and self.current_phase == 0 and not self.blocked:
+        if range < 1 and self.left_lane_free and self.current_phase == 0 and not self.blocked:
 
             # shut up lane detection
             out = Bool()
@@ -65,16 +65,7 @@ class Overtaker(Node):
 
         # Phase 1 - Switch Lanes
         if self.current_phase == 1:
-            out = Float64()
-            out.data = -25.0
-            self.pub_steering.publish(out)
-            self.lc_time = self.calc_lc_time()
-            time.sleep(self.lc_time * 0.9)
-            out.data = 25.0
-            self.pub_steering.publish(out)
-            time.sleep(self.lc_time * 0.9)
-            out.data = 0.0
-            self.pub_steering.publish(out)
+            self.change_lane(-25.0, 0.9)
             self.current_phase = 2
             print("---SET CURRENT PHASE TO 2---")
         # Phase 2 - Switch RoI and Hold Lane
@@ -111,31 +102,38 @@ class Overtaker(Node):
             print("---SET CURRENT PHASE TO 5---")
         # Phase 5 - Switch Lanes back
         elif self.current_phase == 5:
-            out = Float64()
-            out.data = 25.0
-            self.pub_steering.publish(out)
-            self.lc_time = self.calc_lc_time()
-            time.sleep(self.lc_time * 0.9)
-            out.data = -25.0
-            self.pub_steering.publish(out)
-            time.sleep(self.lc_time * 0.9)
-            out.data = 0.0
-            self.pub_steering.publish(out)
+            self.change_lane(25.0, 0.9)
             msg_ld = Bool()
             msg_ld.data = False
             self.pub_block_lbs.publish(msg_ld)
             self.pub_block_parking.publish(msg_ld)
             print("---OVERTAKE COMPLETE---")
+            self.current_phase = 0 # reset for next lap
         else:
             return
 
+    def change_lane(self, starting_angle, correction_factor):
+            out = Float64()
+            out.data = starting_angle
+            self.pub_steering.publish(out)
+            self.lc_time = self.calc_lc_time()
+            time.sleep(self.lc_time * correction_factor)
+            out.data = starting_angle * -1
+            self.pub_steering.publish(out)
+            time.sleep(self.lc_time * correction_factor)
+            out.data = 0.0
+            self.pub_steering.publish(out)
+
     def calc_lc_time(self):
-        gamma = 1.57079  # 90 degrees in rad
-        beta = 0.43633  # 25 degrees in rad
-        b = 0.25
-        c = (b * math.sin(gamma)) / math.sin(beta)  # calculation of effective distance via sine rule
-        time = c / self.speed  # calculation of needed time via distance / speed
-        return time
+        if self.speed != 0:
+            gamma = 1.57079  # 90 degrees in rad
+            beta = 0.43633  # 25 degrees in rad
+            b = 0.25
+            c = (b * math.sin(gamma)) / math.sin(beta)  # calculation of effective distance via sine rule
+            time = c / self.speed  # calculation of needed time via distance / speed
+            return time
+        else:
+            return 0
 
     def get_current_speed(self, msg):
         self.speed = msg.data
