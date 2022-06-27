@@ -17,6 +17,7 @@ class Parker(Node):
         self.current_parking_phase = 0
         self.reverse_speed = -0.2  # TO BE CHANGED - VELOCITY CONTROL
         self.general_speed = 0.4  # TO BE CHANGED - VELOCITY CONTROL
+        self.speed = 0
         self.back_distance = 10.0
 
         # ToF subscriptions
@@ -31,6 +32,7 @@ class Parker(Node):
         self.sub_block_parking = self.create_subscription(Bool, 'block_parking', self.update_self_blocked, 1)
 
         # Speed and Steering publication
+        self.sub_speed = self.create_subscription(Float64, '/speed', self.get_current_speed, 1)
         self.pub_speed = self.create_publisher(Float64, '/speed', 1)
         self.pub_steering = self.create_publisher(Float64, '/steering', 1)
 
@@ -75,6 +77,10 @@ class Parker(Node):
 
     def get_back_distance(self, msg_in):
         self.back_distance = min(msg_in.max_range, msg_in.range)
+
+    def get_current_speed(self, msg):
+        self.speed = msg.data
+        print("PARKER: ", self.speed)
 
     def parking(self):
         # Phase 1 - Determine reverse speed, allignment

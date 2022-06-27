@@ -132,6 +132,7 @@ class Overtaker(Node):
 
     def get_current_speed(self, msg):
         self.speed = msg.data
+        print("OVERTAKER: ", self.speed)
 
     def look_left(self, msg):
         self.left_lane_free = 0.5 < msg.range
