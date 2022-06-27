@@ -20,9 +20,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'autonomous_driving = autonomous_driving.lane_based_steer:main',
+            'autonomous_driving = autonomous_driving.autonomous_driving:main', 
+            'lane_based_steer = autonomous_driving.lane_based_steer:main',
             'overtaker = autonomous_driving.overtaker:main',
-            'parker = autonomous_driving.parker:main'
+            'parker = autonomous_driving.parker:main',
+            'velocity_controller = autonomous_driving.velocity_controller:main'
         ],
     },
 )
