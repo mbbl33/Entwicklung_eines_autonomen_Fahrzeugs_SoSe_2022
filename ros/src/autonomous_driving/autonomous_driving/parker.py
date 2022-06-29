@@ -89,7 +89,7 @@ class Parker(Node):
             msg_out = Float64()
             msg_out.data = self.general_speed
             self.pub_speed.publish(msg_out)
-            time.sleep(1)
+            time.sleep(0.5)
             # back-up and steer
             msg_out = Float64()
             msg_out.data = self.reverse_speed

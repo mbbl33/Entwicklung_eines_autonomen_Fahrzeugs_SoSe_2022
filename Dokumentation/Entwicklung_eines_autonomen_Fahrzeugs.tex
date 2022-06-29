@@ -1,0 +1,59 @@
+% Angabe zu Blattgröße, Schriftgröße, Hinzufügen des Bildverzeichnis und Quellverzeichnis als Punkt im Inhaltsverzeichnis, einseitiger Druck
+\documentclass[a4paper,12pt,listof=toc,bibliography=totoc,oneside, titlepage, headsepline,headings=optiontohead]{scrartcl}	
+\input{settings.tex}
+
+\subject{Ausarbeitung}
+\title{II2021 Entwicklung eines autonomen Fahrzeugs}
+\subtitle{Sommersemester 2022}
+\author{Sven Thomas und Maximilian Biebl} 		% hier Vorname, Nachname einfügen
+\mail{maximilian.biebl@mni.thm.de} 	% hier THM-Mailadresse einfügen
+\mail{sven.thomas@mni.thm.de} 
+\publishers{Dozent:\\Jakob Czekansky, M.Sc.}
+%\institute{Institute für Technik und Informatik}
+
+
+% % % % % % % % % % % % % %
+% % % Dokument Beginn % % %
+% % % % % % % % % % % % % %
+\begin{document}
+	%Deckblatt
+	\include{chapter/deckblatt}
+	
+	%Inhaltsverzeichnis
+	\pagenumbering{roman}
+	\tableofcontents
+	\clearpage
+	
+	%Inhalt
+	\pagenumbering{arabic}
+	\pagestyle{scrheadings}
+	\setcounter{page}{1} %Seitenzähler auf 1 setzen, da Inhaltsverzeichnis sonst als Seite 1 zählt
+	\include{chapter/einleitung}
+	\include{chapter/hauptteil}
+	\include{chapter/ende}
+	\clearpage
+	
+	%Römische Seitennummerierung
+	\pagenumbering{Roman}
+	\setcounter{page}{1}
+	
+	% ================================
+	% Falls nicht verwendet bitte entsprechend auskommentieren
+	% ================================
+	%Anhang
+	\include{chapter/anhang}
+	\pagebreak
+	
+	%Abbildungsverzeichnis
+	\listoffigures
+	\pagebreak
+	
+	%Tabellenverzeichnis
+	\listoftables
+	\pagebreak
+
+	%Literaturverzeichnis
+	\bibliographystyle{literature/bibtex/IEEEtran}	
+	\bibliography{literature/literature}
+	
+\end{document}
