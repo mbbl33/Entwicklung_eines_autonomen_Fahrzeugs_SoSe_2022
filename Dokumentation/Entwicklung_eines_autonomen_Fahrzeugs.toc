@@ -2,23 +2,23 @@
 \contentsline {section}{\numberline {1}Einleitung}{1}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Ausgangsposition}{1}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Zielsetzung}{1}{subsection.1.2}%
-\contentsline {section}{\numberline {2}Hauptteil}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Unterabschnitt 1}{2}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Unterabschnitt 2}{2}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Unterabschnitt 3}{3}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Unterabschnitt 4}{5}{subsection.2.4}%
-\contentsline {section}{\numberline {3}Hauptteil 2}{7}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Unterabschnitt}{7}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Unterabschnitt}{8}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}Unterunterabschnitt}{8}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}Unterunterabschnitt}{8}{subsubsection.3.2.2}%
-\contentsline {paragraph}{\nonumberline Paragraph}{8}{paragraph*.3}%
-\contentsline {paragraph}{\nonumberline Paragraph}{8}{paragraph*.5}%
-\contentsline {subparagraph}{\nonumberline Subparagraph}{9}{subparagraph*.7}%
-\contentsline {section}{\numberline {4}Fazit}{10}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Zusammenfassung}{10}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Reflexion \& Bewertung der Aufgabenstellung}{10}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Ausblick}{11}{subsection.4.3}%
+\contentsline {section}{\numberline {2}Lenkung anhand der Linien}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Die erste ^^e2^^80^^9enaive^^e2^^80^^9c Idee und ihre Probleme}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Weiterentwicklung der ersten Idee}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Region-of-Interest}{3}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Unterabschnitt 4}{4}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Hauptteil 2}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Unterabschnitt}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Unterabschnitt}{6}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Unterunterabschnitt}{6}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Unterunterabschnitt}{7}{subsubsection.3.2.2}%
+\contentsline {paragraph}{\nonumberline Paragraph}{7}{paragraph*.3}%
+\contentsline {paragraph}{\nonumberline Paragraph}{7}{paragraph*.5}%
+\contentsline {subparagraph}{\nonumberline Subparagraph}{7}{subparagraph*.7}%
+\contentsline {section}{\numberline {4}Fazit}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Zusammenfassung}{8}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Reflexion \& Bewertung der Aufgabenstellung}{8}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Ausblick}{9}{subsection.4.3}%
 \contentsline {section}{\nonumberline Anhang}{I}{section*.9}%
 \contentsline {section}{\nonumberline Abbildungsverzeichnis}{II}{section*.10}%
 \contentsline {section}{\nonumberline Tabellenverzeichnis}{III}{section*.11}%

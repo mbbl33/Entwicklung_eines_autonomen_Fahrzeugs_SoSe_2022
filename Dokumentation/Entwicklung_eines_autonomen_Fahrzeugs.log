@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.17)  29 JUN 2022 11:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.17)  29 JUN 2022 12:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -992,28 +992,31 @@ Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'ngerman'.
 
 (Entwicklung_eines_autonomen_Fahrzeugs.aux (chapter/deckblatt.aux)
-(chapter/einleitung.aux) (chapter/hauptteil.aux) (chapter/ende.aux)
-(chapter/anhang.aux))
+(chapter/einleitung.aux) (chapter/hauptteil.aux
+
+LaTeX Warning: Label `fig:vector_kurve' multiply defined.
+
+) (chapter/ende.aux) (chapter/anhang.aux))
 \openout1 = `Entwicklung_eines_autonomen_Fahrzeugs.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1078,7 +1081,7 @@ G,.JBIG2,.JB2,.eps]
 (/home/max/.miktex/texmfs/install/tex/latex/00miktex/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 18.
+Package hyperref Info: Link coloring OFF on input line 17.
 
 (/home/max/.miktex/texmfs/install/tex/latex/hyperref/nameref.sty
 Package: nameref 2022-05-13 v2.48 Cross-referencing by name of section
@@ -1102,7 +1105,7 @@ Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           `bookmarkpackage=false' before \begin{document} and
 (scrartcl)           you can avoid this message adding:
 (scrartcl)             \usepackage{bookmark}
-(scrartcl)           before \begin{document} on input line 18.
+(scrartcl)           before \begin{document} on input line 17.
 
 (/home/max/.miktex/texmfs/install/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2020-11-06 v1.29 PDF bookmarks (HO)
@@ -1111,12 +1114,12 @@ Package: bookmark 2020-11-06 v1.29 PDF bookmarks (HO)
 File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
 \BKM@id=\count357
 ))
-Package hyperref Info: Option `bookmarksopen' set `true' on input line 18.
-Package hyperref Info: Option `breaklinks' set `true' on input line 18.
+Package hyperref Info: Option `bookmarksopen' set `true' on input line 17.
+Package hyperref Info: Option `breaklinks' set `true' on input line 17.
 
 
 Package hyperref Warning: Option `colorlinks' has already been used,
-(hyperref)                setting the option has no effect on input line 18.
+(hyperref)                setting the option has no effect on input line 17.
 
 \openout2 = `chapter/deckblatt.aux'.
 
@@ -1189,7 +1192,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.31 ^^I\include{chapter/einleitung}
+l.30 ^^I\include{chapter/einleitung}
                                      [1
 
 
@@ -1197,57 +1200,94 @@ l.31 ^^I\include{chapter/einleitung}
 \openout2 = `chapter/hauptteil.aux'.
 
  (chapter/hauptteil.tex
-
-LaTeX Warning: Citation `knuth:1984' on page 2 undefined on input line 4.
-
-
-LaTeX Warning: Citation `IEEEexample:texfaq' on page 2 undefined on input line 
-4.
-
-
-LaTeX Warning: Citation `IEEEexample:texfaq' on page 2 undefined on input line 
-10.
-
-<img/sample.png, id=76, 602.25pt x 401.5pt>
-File: img/sample.png Graphic file (type png)
-<use img/sample.png>
-Package pdftex.def Info: img/sample.png  used on input line 29.
-(pdftex.def)             Requested size: 241.84843pt x 161.23428pt.
-[2
-
+<img/vector_gerade.png, id=76, 1151.30125pt x 451.6875pt>
+File: img/vector_gerade.png Graphic file (type png)
+<use img/vector_gerade.png>
+Package pdftex.def Info: img/vector_gerade.png  used on input line 6.
+(pdftex.def)             Requested size: 241.84843pt x 94.87784pt.
+<img/vector_zu_rechts.png, id=78, 939.51pt x 359.3425pt>
+File: img/vector_zu_rechts.png Graphic file (type png)
+<use img/vector_zu_rechts.png>
+Package pdftex.def Info: img/vector_zu_rechts.png  used on input line 16.
+(pdftex.def)             Requested size: 241.84843pt x 92.5002pt.
+<img/vector_kurve.png, id=79, 657.45625pt x 250.9375pt>
+File: img/vector_kurve.png Graphic file (type png)
+<use img/vector_kurve.png>
+Package pdftex.def Info: img/vector_kurve.png  used on input line 24.
+(pdftex.def)             Requested size: 241.84843pt x 92.30553pt.
+ [2
 
 
 
-pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has
- been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.36 \subsection
-                {Unterabschnitt 3}
+
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.36 \subsection
-                {Unterabschnitt 3} <./img/sample.png>] [3] [4] [5] [6] [7]
-[8]) [9]
+l.39 
+     
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.39 
+     
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.39 
+      <./img/vector_gerade.png> <./img/vector_zu_rechts.png> <./img/vector_kurv
+e.png>]
+<img/roi_breite.png, id=91, 108.405pt x 79.497pt>
+File: img/roi_breite.png Graphic file (type png)
+<use img/roi_breite.png>
+Package pdftex.def Info: img/roi_breite.png  used on input line 49.
+(pdftex.def)             Requested size: 241.84843pt x 177.37819pt.
+ [3
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.56 \Blindtext\Blindtext
+                          <./img/roi_breite.png>] [4] [5]
+
+LaTeX Warning: Citation `knuth:1984' on page 6 undefined on input line 63.
+
+
+LaTeX Warning: Citation `IEEEexample:texfaq' on page 6 undefined on input line 
+63.
+
+
+LaTeX Warning: Citation `IEEEexample:texfaq' on page 6 undefined on input line 
+69.
+
+[6
+pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has
+ been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.89 \subsubsection
+                   {Unterunterabschnitt}]) [7]
 \openout2 = `chapter/ende.aux'.
 
- (chapter/ende.tex [10
+ (chapter/ende.tex [8
 
 
 
-]) [11]
+]) [9]
 \openout2 = `chapter/anhang.aux'.
 
- (chapter/anhang.tex) [1
+
+(chapter/anhang.tex) [1
 
 
 
 
-]
-(Entwicklung_eines_autonomen_Fahrzeugs.lof
+] (Entwicklung_eines_autonomen_Fahrzeugs.lof
 Package tocbasic Info: Using my definition of `\numberline' on input line 2.
+Package tocbasic Info: Using my definition of `\numberline' on input line 3.
+Package tocbasic Info: Using my definition of `\numberline' on input line 4.
 )
 \tf@lof=\write6
 \openout6 = `Entwicklung_eines_autonomen_Fahrzeugs.lof'.
@@ -1273,30 +1313,34 @@ No file Entwicklung_eines_autonomen_Fahrzeugs.bbl.
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `Entwicklung_eines_autonomen_Fahrzeugs.out' h
 as not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 33460 strings out of 478615
- 699967 string characters out of 2848820
- 1194545 words of memory out of 3000000
- 50978 multiletter control sequences out of 15000+600000
- 479467 words of font info for 66 fonts, out of 8000000 for 9000
+ 33499 strings out of 478615
+ 700964 string characters out of 2848820
+ 1194756 words of memory out of 3000000
+ 51013 multiletter control sequences out of 15000+600000
+ 479458 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,20n,106p,10654b,577s stack positions out of 10000i,1000n,20000p,200000b,80000s
-</home/max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
+ 108i,20n,106p,10654b,601s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ </home/max/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.p
+k></home/max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
 /home/max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr12.pfb></hom
 e/max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr17.pfb></home/ma
 x/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsl12.pfb></home/max/.
 miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></home/max/.m
-iktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti10.pfb></home/max/.mikt
+iktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/max/.mikt
 ex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti12.pfb></home/max/.miktex/
 texmfs/install/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on Entwicklung_eines_autonomen_Fahrzeugs.pdf (16 pages, 182249 b
+Output written on Entwicklung_eines_autonomen_Fahrzeugs.pdf (14 pages, 385543 b
 ytes).
 PDF statistics:
- 251 PDF objects out of 1000 (max. 8388607)
- 46 named destinations out of 1000 (max. 500000)
- 188 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 261 PDF objects out of 1000 (max. 8388607)
+ 47 named destinations out of 1000 (max. 500000)
+ 203 words of extra memory for PDF output out of 10000 (max. 10000000)
 
