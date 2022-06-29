@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.17)  29 JUN 2022 12:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.6.29)  29 JUN 2022 19:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **./einleitung.tex
 (einleitung.tex
-LaTeX2e <2021-11-15> patch level 1
-L3 programming layer <2022-05-04>
+LaTeX2e <2022-06-01> patch level 3
+L3 programming layer <2022-06-16>
 ! Undefined control sequence.
 l.1 \section
             {Einleitung}
@@ -202,6 +202,9 @@ Missing character: There is no a in font nullfont!
 Missing character: There is no b in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no n in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no r in font nullfont!
 Missing character: There is no v in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no e in font nullfont!
@@ -455,7 +458,7 @@ Type  H <return>  for immediate help.
  ...                                              
                                                   
 l.7 G
-     egeben war der Gazebo Simulator mit einer Simulation des cITIcars und e...
+     egeben ist der Gazebo Simulator mit einer Simulation des cITIcars und e...
 
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -467,9 +470,9 @@ Missing character: There is no e in font nullfont!
 Missing character: There is no b in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no n in font nullfont!
-Missing character: There is no w in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no r in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
 Missing character: There is no d in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no r in font nullfont!
@@ -1331,10 +1334,10 @@ Missing character: There is no . in font nullfont!
 
  
 Here is how much of TeX's memory you used:
- 30 strings out of 478615
- 572 string characters out of 2848820
- 290555 words of memory out of 3000000
- 18284 multiletter control sequences out of 15000+600000
+ 30 strings out of 478352
+ 542 string characters out of 2842750
+ 298397 words of memory out of 3000000
+ 18547 multiletter control sequences out of 15000+600000
  469259 words of font info for 28 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  23i,1n,32p,668b,88s stack positions out of 10000i,1000n,20000p,200000b,80000s
