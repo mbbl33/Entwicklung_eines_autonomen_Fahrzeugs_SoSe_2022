@@ -1,8 +1,12 @@
 \babel@toc {ngerman}{}\relax 
-\beamer@sectionintoc {1}{Linienerkennung und Lenkung}{3}{0}{1}
-\beamer@subsectionintoc {1}{1}{Erste \glqq naive\grqq Idee und Probleme}{3}{0}{1}
+\beamer@sectionintoc {1}{Linienerkennung und Lenkung}{4}{0}{1}
+\beamer@subsectionintoc {1}{1}{Erste \glqq naive\grqq Idee und Probleme}{4}{0}{1}
 \beamer@subsectionintoc {1}{2}{Weiterentwicklung der ersten Idee}{6}{0}{1}
 \beamer@subsectionintoc {1}{3}{Lenkwinkelbestimmung}{8}{0}{1}
 \beamer@sectionintoc {2}{^^c3^^9cberholman^^c3^^b6ver}{11}{0}{2}
 \beamer@subsectionintoc {2}{1}{Einleitung des Man^^c3^^b6vers}{11}{0}{2}
 \beamer@subsectionintoc {2}{2}{5 Phasen des Man^^c3^^b6vers}{12}{0}{2}
+\beamer@sectionintoc {3}{Parken}{15}{0}{3}
+\beamer@subsectionintoc {3}{1}{Finden der Parkl^^c3^^bccke}{15}{0}{3}
+\beamer@subsectionintoc {3}{2}{Einparken}{16}{0}{3}
+\beamer@sectionintoc {4}{Geschwindigkeitsregler}{17}{0}{4}

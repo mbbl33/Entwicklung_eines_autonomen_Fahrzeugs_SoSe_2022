@@ -2,18 +2,18 @@
 \headcommand {\beamer@framepages {1}{1}}
 \headcommand {\slideentry {0}{0}{2}{2/2}{}{0}}
 \headcommand {\beamer@framepages {2}{2}}
-\headcommand {\beamer@sectionpages {1}{2}}
-\headcommand {\beamer@subsectionpages {1}{2}}
-\headcommand {\sectionentry {1}{Linienerkennung und Lenkung}{3}{Linienerkennung und Lenkung}{0}}
-\headcommand {\beamer@subsectionpages {3}{2}}
-\headcommand {\beamer@subsectionentry {0}{1}{1}{3}{Erste \glqq naive\grqq Idee und Probleme}}
-\headcommand {\slideentry {1}{1}{1}{3/3}{Erste \glqq naive\grqq Idee und Probleme}{0}}
+\headcommand {\slideentry {0}{0}{3}{3/3}{}{0}}
 \headcommand {\beamer@framepages {3}{3}}
-\headcommand {\slideentry {1}{1}{2}{4/4}{Erste \glqq naive\grqq Idee und Probleme}{0}}
+\headcommand {\beamer@sectionpages {1}{3}}
+\headcommand {\beamer@subsectionpages {1}{3}}
+\headcommand {\sectionentry {1}{Linienerkennung und Lenkung}{4}{Linienerkennung und Lenkung}{0}}
+\headcommand {\beamer@subsectionpages {4}{3}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{4}{Erste \glqq naive\grqq Idee und Probleme}}
+\headcommand {\slideentry {1}{1}{1}{4/4}{Erste \glqq naive\grqq Idee und Probleme}{0}}
 \headcommand {\beamer@framepages {4}{4}}
-\headcommand {\slideentry {1}{1}{3}{5/5}{Erste \glqq naive\grqq Idee und Probleme}{0}}
+\headcommand {\slideentry {1}{1}{2}{5/5}{Erste \glqq naive\grqq Idee und Probleme}{0}}
 \headcommand {\beamer@framepages {5}{5}}
-\headcommand {\beamer@subsectionpages {3}{5}}
+\headcommand {\beamer@subsectionpages {4}{5}}
 \headcommand {\beamer@subsectionentry {0}{1}{2}{6}{Weiterentwicklung der ersten Idee}}
 \headcommand {\slideentry {1}{2}{1}{6/6}{Weiterentwicklung der ersten Idee}{0}}
 \headcommand {\beamer@framepages {6}{6}}
@@ -27,7 +27,7 @@
 \headcommand {\beamer@framepages {9}{9}}
 \headcommand {\slideentry {1}{3}{3}{10/10}{Lenkwinkelbestimmung}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\beamer@sectionpages {3}{10}}
+\headcommand {\beamer@sectionpages {4}{10}}
 \headcommand {\beamer@subsectionpages {8}{10}}
 \headcommand {\sectionentry {2}{^^c3^^9cberholman^^c3^^b6ver}{11}{^^c3^^9cberholman^^c3^^b6ver}{0}}
 \headcommand {\beamer@subsectionpages {11}{10}}
@@ -42,8 +42,26 @@
 \headcommand {\beamer@framepages {13}{13}}
 \headcommand {\slideentry {2}{2}{3}{14/14}{5 Phasen des Man^^c3^^b6vers}{0}}
 \headcommand {\beamer@framepages {14}{14}}
-\headcommand {\beamer@partpages {1}{14}}
-\headcommand {\beamer@subsectionpages {12}{14}}
 \headcommand {\beamer@sectionpages {11}{14}}
-\headcommand {\beamer@documentpages {14}}
-\headcommand {\gdef \inserttotalframenumber {14}}
+\headcommand {\beamer@subsectionpages {12}{14}}
+\headcommand {\sectionentry {3}{Parken}{15}{Parken}{0}}
+\headcommand {\beamer@subsectionpages {15}{14}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{15}{Finden der Parkl^^c3^^bccke}}
+\headcommand {\slideentry {3}{1}{1}{15/15}{Finden der Parkl^^c3^^bccke}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\beamer@subsectionpages {15}{15}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{16}{Einparken}}
+\headcommand {\slideentry {3}{2}{1}{16/16}{Einparken}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\beamer@sectionpages {15}{16}}
+\headcommand {\beamer@subsectionpages {16}{16}}
+\headcommand {\sectionentry {4}{Geschwindigkeitsregler}{17}{Geschwindigkeitsregler}{0}}
+\headcommand {\slideentry {4}{0}{1}{17/17}{}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\slideentry {4}{0}{2}{18/18}{}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\beamer@partpages {1}{18}}
+\headcommand {\beamer@subsectionpages {17}{18}}
+\headcommand {\beamer@sectionpages {17}{18}}
+\headcommand {\beamer@documentpages {18}}
+\headcommand {\gdef \inserttotalframenumber {18}}

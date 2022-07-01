@@ -1,6 +1,7 @@
 \beamer@slide {fig:Auto}{1}
-\beamer@slide {fig:Lenkung via Vektoren in Gerade}{3}
-\beamer@slide {fig:Lenkung via Vektoren zu weit rechts}{4}
+\beamer@slide {fig:anmerkung}{2}
+\beamer@slide {fig:Lenkung via Vektoren in Gerade}{4}
+\beamer@slide {fig:Lenkung via Vektoren zu weit rechts}{5}
 \beamer@slide {fig:Lenkung via Vektoren in Kurve}{5}
 \beamer@slide {fig:Weg mit dem Y}{6}
 \beamer@slide {fig:Mittellinie}{7}
@@ -9,3 +10,5 @@
 \beamer@slide {fig:topdown}{10}
 \beamer@slide {fig:topdown}{11}
 \beamer@slide {fig:topdown}{12}
+\beamer@slide {fig:Parken1}{15}
+\beamer@slide {fig:Parken2}{16}

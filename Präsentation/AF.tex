@@ -28,7 +28,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{xcolor}
-
+\usepackage{ulem}
 
 \title[]{Entwicklung eines autonomen Fahrzeugs}
 \author{Sven Thomas \& Maximilian Biebl}
@@ -38,15 +38,26 @@
 \begin{document}
 
 	\begin{frame}
-		\titlepage
-			\begin{center}
+		\begin{center}
 				\begin{figure}[h]
-					\includegraphics[width=0.40\textwidth]{"./img/Auto"}
+					\includegraphics[width=0.60\textwidth]{"./img/Auto"}
 					\label{fig:Auto}
 				\end{figure}
-			\end{center}
+		\end{center}
+		\titlepage
+			
 	\end{frame}
-
+	\begin{frame}
+		\frametitle{Anmerkung}
+		Präsentationsstil/Gestalltung sollen an David Kriesel anglehnt sein. Seine Vorträge haben meiner Meinung nach eine gute Balance zwischen Humor und Sachlichkeit.
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.50\textwidth]{"./img/anmerkung"}
+				\label{fig:anmerkung}
+			\end{figure}
+		\end{center}
+		Wer ihn nicht kennt: angucken!
+	\end{frame}
 	\begin{frame}
 		\frametitle{Inhalt}
 		\tableofcontents
@@ -57,7 +68,7 @@
 	\subsection{Erste \glqq naive\grqq Idee und Probleme}
 
 	\begin{frame}
-		\frametitle{Erste \glqq naive\grqq  Idee}
+		\frametitle{Erste \sout{dumme} \glqq naive\grqq  Idee}
 		Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand dessen Lenkwinkel bestimmen
 		\begin{center}
 			\begin{figure}[h]
@@ -72,25 +83,20 @@
 		\frametitle{Problem}
 		\begin{center}
 			\begin{figure}[h]
-				\includegraphics[width=0.80\textwidth]{"./img/vector_zu_rechts"}
-				\caption{Problem wenn zu weit rechts}
+				\includegraphics[width=0.60\textwidth]{"./img/vector_zu_rechts"}
+				\caption{wenn zu weit rechts}
 				\label{fig:Lenkung via Vektoren zu weit rechts}
 			\end{figure}
 		\end{center}
-	\end{frame}
-
-	\begin{frame}
-		\frametitle{Problem}
-			\begin{center}
+		\begin{center}
 				\begin{figure}[h]
-					\includegraphics[width=0.80\textwidth]{"./img/vector_kurve"}
-					\caption{Problem in der Kurve}
+					\includegraphics[width=0.60\textwidth]{"./img/vector_kurve"}
+					\caption{in der Kurve}
 					\label{fig:Lenkung via Vektoren in Kurve}
 				\end{figure}
 			\end{center}
+		
 	\end{frame}
-
-
 
 	\subsection{Weiterentwicklung der ersten Idee}
 
@@ -140,12 +146,12 @@
 
 		\begin{center}
 			\begin{figure}[h]
-				\includegraphics[width=0.50\textwidth]{"./img/roi_breite"}
+				\includegraphics[width=0.40\textwidth]{"./img/roi_breite"}
 				\label{fig:roi}
 				\caption{Unterschiedlich große roi}
 			\end{figure}
 		\end{center}
-	\end{frame}
+ 	\end{frame}
 
 	\begin{frame}
 		\frametitle{Verbesserung durch Top-Down-View}
@@ -236,10 +242,69 @@
 		\frametitle{Phasen 3 bis 5}
 		\begin{enumerate}
 			\setcounter{enumi}{2}
-			\item Wagen auf der linken Spur und wartet bis er an Box vorbei ist
+			\item Wagen ist auf der linken Spur und wartet bis er an  der Box vorbei ist
 			\item Spiegelverkehrt zu Phase 2 wechsel der RoI
 			\item Spiegelverkehrt zu Phase 1 Spurwechsel zurück
 		\end{enumerate}
 	\end{frame}
 	
+	\section{Parken}
+	
+	\subsection{Finden der Parklücke}
+	
+	\begin{frame}
+		\frametitle{Erkennen einer Parklücke in 4 Phasen}
+		
+		\begin{enumerate}
+			\item Erkennen der ersten Box
+			\item Erkennen der Lücke
+			\item Erkennung der zweiten Box
+			\item Einleiten des Parkmanövers
+		\end{enumerate}
+		
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.8\textwidth]{"./img/Parken"}
+				\label{fig:Parken1}
+			\end{figure}
+		\end{center}
+	\end{frame}
+	
+	\subsection{Einparken}
+	
+	\begin{frame}
+		\frametitle{Einparken in 3 Phasen}
+		\begin{enumerate}
+			\item Fährt noch ein Stück grade aus und führt anschließen rückwärts ein Spurwechsel durch, gleich zum Überholmanöver
+			\item In der Parlücke $\Rightarrow$ fährt Rückwärts bis hinterer ToF Schwellenwert erreicht.
+			\item Ausparken $\Rightarrow$ Spurwechsel vorwärts und anschließend übergang in normalen Modus
+		\end{enumerate}
+		
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.6\textwidth]{"./img/Parken2"}
+				\label{fig:Parken2}
+			\end{figure}
+		\end{center}
+		
+	\end{frame}
+	
+	\section{Geschwindigkeitsregler}
+	
+	\begin{frame}
+	\frametitle{Geschwindigkeitsregler}
+	sehr primitiv:
+		\begin{itemize}
+			\item nur außerhalb von Manövern aktiv
+			\item bestimmung anhand Lenkwinkel
+			\item Lenkwinkel kleiner als Schwellwert $\Rightarrow$ beschleunigen
+			\item nach delay immernoch kleiner als Schwellwert $\Rightarrow$ weiter beschleunigen
+			\item Schwellwert überschritten $\Rightarrow$ zurück auf Minimalgeschwindigkeit
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+		\center
+		DANKE FÜR IHRE AUFMERKSAMKEIT!
+	\end{frame}
 \end{document}
