@@ -19,13 +19,14 @@ class Overtaker(Node):
         self.lc_time = 0
 
         # ToF subscriptions
-        self.sub_front2 = self.create_subscription(Range, '/tof_Front2', self.is_road_blocked, 1)
+        self.sub_front = self.create_subscription(Range, '/tof_Front', self.is_road_blocked, 1)
         self.sub_left = self.create_subscription(Range, 'tof_Front_Left', self.look_left, 1)
         self.sub_right = self.create_subscription(Range, 'tof_Front_Right', self.look_right, 1)
 
-        # Blocking publications for lbs and parking
+        # Blocking publications for lbs and parking and velocity_controller
         self.pub_block_lbs = self.create_publisher(Bool, 'block_lane_based_steer', 1)
         self.pub_block_parking = self.create_publisher(Bool, 'block_parking', 1)
+        self.pub_block_velocity_controller = self.create_publisher(Bool, 'block_velocity_controller', 1)
 
         # Blocking subscription from parking
         self.sub_block_overtaker = self.create_subscription(Bool, 'block_lane_based_steer', self.update_self_blocked, 1)
@@ -33,6 +34,8 @@ class Overtaker(Node):
         # Adjustment publications when switching lanes
         self.pub_adjust_RoI = self.create_publisher(Int64MultiArray, 'adjust_region_of_interest', 1)
         self.pub_adjust_factor = self.create_publisher(Float64, 'adjust_driveway_factor', 1)
+
+        self.pub_speed = self.create_publisher(Float64, '/speed', 1)
 
         # Speed subscritpion and Steering publication
         self.sub_speed = self.create_subscription(Float64, '/speed', self.get_current_speed, 1)
@@ -47,11 +50,14 @@ class Overtaker(Node):
         if range < 1 and self.left_lane_free and self.current_phase == 0 and not self.blocked:
 
             # shut up lane detection
-            out = Bool()
-            out.data = True
-            self.pub_block_lbs.publish(out)
-            self.pub_block_parking.publish(out)
-
+            block = Bool()
+            block.data = True
+            self.pub_block_lbs.publish(block)
+            self.pub_block_parking.publish(block)
+            self.pub_block_velocity_controller.publish(block)
+            speed = Float64()
+            speed.data = 0.5
+            self.pub_speed.publish(speed)
             print("---INITITATE OVERTAKE---")
             self.current_phase = 1
             print("---SET CURRENT PHASE TO 1---")
@@ -90,10 +96,11 @@ class Overtaker(Node):
         # Phase 5 - Switch Lanes back
         elif self.current_phase == 5:
             self.change_lane(25.0, 0.9)
-            msg_ld = Bool()
-            msg_ld.data = False
-            self.pub_block_lbs.publish(msg_ld)
-            self.pub_block_parking.publish(msg_ld)
+            block = Bool()
+            block.data = False
+            self.pub_block_lbs.publish(block)
+            self.pub_block_parking.publish(block)
+            self.pub_block_velocity_controller.publish(block)
             print("---OVERTAKE COMPLETE---")
             self.current_phase = 0 # reset for next lap
         else:

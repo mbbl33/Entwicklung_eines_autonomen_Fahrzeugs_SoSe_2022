@@ -22,17 +22,18 @@ class Parker(Node):
 
         # ToF subscriptions
         self.sub_right = self.create_subscription(Range, 'tof_Front_Right', self.look_for_parking, 1)
-        self.sub_back = self.create_subscription(Range, 'tof_Back', self.get_back_distance, 1)
+        self.sub_back = self.create_subscription(Range, 'tof_Back', self.update_back_distance, 1)
 
-        # Blocking publications for lbs and overtaker
+        # Blocking publications for lbs and overtaker and velocity_controller
         self.pub_block_lbs = self.create_publisher(Bool, 'block_lane_based_steer', 1)
         self.pub_block_overtaker = self.create_publisher(Bool, 'block_overtaker', 1)
+        self.pub_block_velocity_controller = self.create_publisher(Bool, 'block_velocity_controller', 1)
 
         # Blocking subscription from overtaker
         self.sub_block_parking = self.create_subscription(Bool, 'block_parking', self.update_self_blocked, 1)
 
         # Speed and Steering publication
-        self.sub_speed = self.create_subscription(Float64, '/speed', self.get_current_speed, 1)
+        self.sub_speed = self.create_subscription(Float64, '/speed', self.update_current_speed, 1)
         self.pub_speed = self.create_publisher(Float64, '/speed', 1)
         self.pub_steering = self.create_publisher(Float64, '/steering', 1)
 
@@ -45,27 +46,33 @@ class Parker(Node):
             if self.current_scan_phase == 0:
                 # Phase 0 - Looking for box on the left
                 if msg_in.range < msg_in.max_range and not self.blocked:
-                    out = Bool()
-                    out.data = True
-                    self.pub_block_overtaker.publish(out)
+                    block = Bool()
+                    block.data = True
+                    self.pub_block_overtaker.publish(block)
+                    self.pub_block_velocity_controller.publish(block)
+                    speed = Float64()
+                    speed.data = 0.5
+                    self.pub_speed.publish(speed)
                     self.current_scan_phase = 1
 
             elif self.current_scan_phase == 1:
                 # Phase 1 - First box passed, looking for second box
                 if msg_in.max_range <= msg_in.range:
                     self.current_scan_phase = 2
+
             elif self.current_scan_phase == 2:
                 # Phase 2 - Second box passed, disable lane based steering
                 if msg_in.range < msg_in.max_range:
-                    out = Bool()
-                    out.data = True
-                    self.pub_block_lbs.publish(out)
+                    block_lbs = Bool()
+                    block_lbs.data = True
+                    self.pub_block_lbs.publish(block_lbs)
                     self.current_scan_phase = 3
+
             elif self.current_scan_phase == 3:
                 # Phase 3 - Initiate Parking maneuver
-                msg_out = Float64()
-                msg_out.data = 0.0
-                self.pub_speed.publish(msg_out)
+                speed = Float64()
+                speed.data = 0.0
+                self.pub_speed.publish(speed)
                 self.scan_blocked = True
                 print("---INITITATE PARKING---")
                 self.current_parking_phase = 1
@@ -75,10 +82,10 @@ class Parker(Node):
         else:
             self.parking()
 
-    def get_back_distance(self, msg_in):
+    def update_back_distance(self, msg_in):
         self.back_distance = min(msg_in.max_range, msg_in.range)
 
-    def get_current_speed(self, msg):
+    def update_current_speed(self, msg):
         self.speed = msg.data
         print("PARKER: ", self.speed)
 
@@ -86,30 +93,30 @@ class Parker(Node):
         # Phase 1 - Determine reverse speed, allignment
         if self.current_parking_phase == 1:
             # move forward
-            msg_out = Float64()
-            msg_out.data = self.general_speed
-            self.pub_speed.publish(msg_out)
+            speed = Float64()
+            speed.data = self.general_speed
+            self.pub_speed.publish(speed)
             time.sleep(0.5)
             # back-up and steer
-            msg_out = Float64()
-            msg_out.data = self.reverse_speed
-            self.pub_speed.publish(msg_out)
+            speed = Float64()
+            speed.data = self.reverse_speed
+            self.pub_speed.publish(speed)
             self.change_lane(25.0, 1, self.reverse_speed)
             print("---SET CURRENT PHASE TO 2---")
             self.current_parking_phase = 2
         # Phase 2 - closing in on parked car and stopping
         elif self.current_parking_phase == 2:
             if self.back_distance < 0.25:
-                msg_out = Float64()
-                msg_out.data = 0.0
-                self.pub_speed.publish(msg_out)
+                speed = Float64()
+                speed.data = 0.0
+                self.pub_speed.publish(speed)
                 print("---SET CURRENT PHASE TO 3---")
                 self.current_parking_phase = 3
         # Phase 3 - forward lane switch and unblock
         elif self.current_parking_phase == 3:
-            msg_out = Float64()
-            msg_out.data = self.general_speed
-            self.pub_speed.publish(msg_out)
+            speed = Float64()
+            speed.data = self.general_speed
+            self.pub_speed.publish(speed)
             self.change_lane(-25.0, 1, self.general_speed)
             print("---PARKING COMPLETE---")
             self.next_lap_prep()
@@ -119,11 +126,12 @@ class Parker(Node):
             return
 
     def next_lap_prep(self):
-        # Unblock overtaker and lbs
-        out = Bool()
-        out.data = False
-        self.pub_block_overtaker.publish(out)
-        self.pub_block_lbs.publish(out)
+        # Unblock overtaker and lbs and velocity_controller
+        block = Bool()
+        block.data = False
+        self.pub_block_overtaker.publish(block)
+        self.pub_block_lbs.publish(block)
+        self.pub_block_velocity_controller.publish(block)
         # Reset phases
         self.current_parking_phase = 0
         self.current_scan_phase = 0
