@@ -16,7 +16,6 @@ class VelocityController(Node):
         self.current_speed = 0.0
         self.max_speed = 2.5
         self.min_speed = 0.5
-        self.counter = 1
         self.blocked = False
         self.last_acceleration = 0.0
 
@@ -40,10 +39,9 @@ class VelocityController(Node):
             self.current_speed = self.min_speed
             msg_out.data = self.current_speed
             self.pub_speed.publish(msg_out)
-            self.counter= 1
         elif self.current_speed < self.max_speed and delay + self.last_acceleration < time.time():
             # acceleration
-            self.current_speed += (step_size * self.counter)
+            self.current_speed += step_size
             self.last_acceleration = time.time()
         msg_out.data = self.current_speed
 
