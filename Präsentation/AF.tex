@@ -47,17 +47,7 @@
 		\titlepage
 			
 	\end{frame}
-	\begin{frame}
-		\frametitle{Anmerkung}
-		Präsentationsstil/Gestalltung soll an David Kriesel anglehnt sein. Seine Vorträge haben meiner Meinung nach eine gute Balance zwischen Humor und Sachlichkeit.
-		\begin{center}
-			\begin{figure}[h]
-				\includegraphics[width=0.50\textwidth]{"./img/anmerkung"}
-				\label{fig:anmerkung}
-			\end{figure}
-		\end{center}
-		Wer ihn nicht kennt: angucken!
-	\end{frame}
+
 	\begin{frame}
 		\frametitle{Inhalt}
 		\tableofcontents
@@ -65,53 +55,17 @@
 
 	\section{Linienerkennung und Lenkung}
 	
-	\subsection{Erste \glqq naive\grqq Idee und Probleme}
+
+	\subsection{Erster funktionsfähiger Ansatz}
 
 	\begin{frame}
-		\frametitle{Erste \sout{dumme} \glqq naive\grqq  Idee}
-		Idee: Aus den Vektoren \glqq Druschnittsvektor\grqq \space bilden  und anhand dessen Lenkwinkel bestimmen
-		\begin{center}
-			\begin{figure}[h]
-				\includegraphics[width=0.80\textwidth]{"./img/vector_gerade"}
-				\caption{Erster Gedanke}
-				\label{fig:Lenkung via Vektoren in Gerade}
-			\end{figure}
-		\end{center}
-	\end{frame}
-
-	\begin{frame}
-		\frametitle{Problem}
-		\begin{center}
-			\begin{figure}[h]
-				\includegraphics[width=0.60\textwidth]{"./img/vector_zu_rechts"}
-				\caption{wenn zu weit rechts}
-				\label{fig:Lenkung via Vektoren zu weit rechts}
-			\end{figure}
-		\end{center}
-		\begin{center}
-				\begin{figure}[h]
-					\includegraphics[width=0.60\textwidth]{"./img/vector_kurve"}
-					\caption{in der Kurve}
-					\label{fig:Lenkung via Vektoren in Kurve}
-				\end{figure}
-			\end{center}
-		
-	\end{frame}
-
-	\subsection{Weiterentwicklung der ersten Idee}
-
-	\begin{frame}
-		\frametitle{Wer brauch Y?}
-		\begin{center}
-			\begin{figure}[h]
-				\includegraphics[width=0.50\textwidth]{"./img/Y-Yeet"}
-				\label{fig:Weg mit dem Y}
-			\end{figure}
-		\end{center}
+		\frametitle{Grundidee}
+	
 
 		\begin{itemize}
-			\item Erkenntinis: wir brauchen nur X-Koordinaten um Mitte der Linien 		zubestimmen
-			\item Anhand des \glqq Durschnitts-X\grqq  und der Bildmitte/Automitte wissen wir in welche Richtung wir müssen. 
+			\item Linienerkennung mit Houghline
+			\item errechnen eines \glqq Durschnitts-X\grqq aus den links und rechts erkannten X-Koordinaten $\Rightarrow$ Soll-Fahrbahn
+			\item Bildmitte $\Rightarrow$ Ist-Fahrbahn
 			\item Wie weiter die beiden X-Koordinaten getrennt sind um so stärker müssen wir lenken 
 		\end{itemize}
 	\end{frame}
@@ -133,7 +87,7 @@
 	\end{frame}
 
 
-	\subsection{Lenkwinkelbestimmung}
+	\subsection{Erster Ansatz zur Lenkwinkelbestimmung}
 	
 	\begin{frame}
 		\frametitle{"Discopumper-Algorithmus" für Region-of-Interest}
@@ -148,7 +102,7 @@
 			\begin{figure}[h]
 				\includegraphics[width=0.40\textwidth]{"./img/roi_breite"}
 				\label{fig:roi}
-				\caption{Unterschiedlich große roi}
+				\caption{Unterschiedlich große RoI}
 			\end{figure}
 		\end{center}
  	\end{frame}
@@ -188,7 +142,35 @@
 	$\Rightarrow$ $\text{Lenkwinkel} = \text{SollFahrbahn}_X - \text{Bildmitte}_X$
 	\end{frame}
 	
+	\begin{frame}
+		\center
+		Funktioniert, aber hat einige Probleme was höhere Geschwindgkeiten betrifft.
+	\end{frame}
 	
+	\subsection{Neuer Ansatz}
+	
+	\begin{frame}
+		\frametitle{Eine neue Hoffnung}
+		\begin{center}
+			\begin{figure}[h]
+				\includegraphics[width=0.5\textwidth]{"./img/neuer_ansatz"}
+				\label{fig:neuer_ansatz}
+			\end{figure}
+		\end{center}
+		
+		\begin{itemize}
+			\item suchen bis weißer Punkt gefunden wird
+			\item neuer Punkt wird nur akzeptiert, wenn
+			\begin{enumerate}
+			\item die Differenz zwischen dem alten und neuen Punkt nicht größer als 30 Pixel ist
+			\item und wenn 25 pixel daneber ein schwarzer Pixel ist $\Rightarrow$ für Boxen und horizonatle Linien
+			\end{enumerate}
+			\item gelbe Linien beschränken den Suchbereich
+		\end{itemize}
+		
+		
+	\end{frame}
+
 	\section{Überholmanöver}
 	
 	\subsection{Einleitung des Manövers}
@@ -231,7 +213,7 @@
 	\begin{frame}
 		\frametitle{2.Phase RoI-Wechsel + Warten auf die zu überholende Box}
 		\begin{itemize}
-			\item versetzen der RoI für Lane Detection
+			\item versetzen der Grenzlinien für Lane Detection
 			\item setzen eines neuen Faktors für Soll-Fahrbahn
 			\item starte wieder die linienbasierte Lenkung
 			\item warten bis rechts die Box ist
@@ -243,7 +225,7 @@
 		\begin{enumerate}
 			\setcounter{enumi}{2}
 			\item Wagen ist auf der linken Spur und wartet bis er an  der Box vorbei ist
-			\item Spiegelverkehrt zu Phase 2 wechsel der RoI
+			\item Spiegelverkehrt zu Phase 2 wechsel der Grenzlinien 
 			\item Spiegelverkehrt zu Phase 1 Spurwechsel zurück
 		\end{enumerate}
 	\end{frame}
@@ -274,9 +256,10 @@
 	
 	\begin{frame}
 		\frametitle{Einparken in 3 Phasen}
+		
 		\begin{enumerate}
-			\item Fährt noch ein Stück grade aus und führt anschließen rückwärts ein Spurwechsel durch, gleich zum Überholmanöver
-			\item In der Parlücke $\Rightarrow$ fährt Rückwärts bis hinterer ToF Schwellenwert erreicht.
+			\item fährt rückwärts bis Box nicht mehr zusehen ist und führt Spurwechsel aus.
+			\item in der Parlücke $\Rightarrow$ fährt Rückwärts bis hinterer ToF Schwellenwert erreicht.
 			\item Ausparken $\Rightarrow$ Spurwechsel vorwärts und anschließend übergang in normalen Modus
 		\end{enumerate}
 		
@@ -290,7 +273,7 @@
 	\end{frame}
 	
 	\section{Geschwindigkeitsregler}
-	
+	 
 	\begin{frame}
 	\frametitle{Geschwindigkeitsregler}
 	sehr primitiv:

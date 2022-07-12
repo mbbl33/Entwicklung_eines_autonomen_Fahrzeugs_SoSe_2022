@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.17)  6 JUL 2022 10:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.17)  10 JUL 2022 17:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -949,158 +949,130 @@ Overfull \vbox (14.21396pt too high) detected at line 49
 
 [1{/home/max/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map}
 
- <./img/Auto.png>]
-<./img/anmerkung.png, id=112, 812.28468pt x 484.81125pt>
-File: ./img/anmerkung.png Graphic file (type png)
-<use ./img/anmerkung.png>
-Package pdftex.def Info: ./img/anmerkung.png  used on input line 60.
-(pdftex.def)             Requested size: 153.64493pt x 91.70082pt.
-[2
-
- <./img/anmerkung.png (PNG copy)>] (AF.toc) [3
+ <./img/Auto.png>] (AF.toc) [2
 
 ]
-<./img/vector_gerade.png, id=193, 1151.30125pt x 451.6875pt>
-File: ./img/vector_gerade.png Graphic file (type png)
-<use ./img/vector_gerade.png>
-Package pdftex.def Info: ./img/vector_gerade.png  used on input line 80.
-(pdftex.def)             Requested size: 245.83282pt x 96.44237pt.
- [4
+LaTeX Font Info:    Trying to load font information for U+msa on input line 71.
 
- <./img/vector_gerade.png>]
-<./img/vector_zu_rechts.png, id=230, 939.51pt x 359.3425pt>
-File: ./img/vector_zu_rechts.png Graphic file (type png)
-<use ./img/vector_zu_rechts.png>
-Package pdftex.def Info: ./img/vector_zu_rechts.png  used on input line 99.
-(pdftex.def)             Requested size: 184.3758pt x 70.51837pt.
-<./img/vector_kurve.png, id=231, 657.45625pt x 250.9375pt>
-File: ./img/vector_kurve.png Graphic file (type png)
-<use ./img/vector_kurve.png>
-Package pdftex.def Info: ./img/vector_kurve.png  used on input line 99.
-(pdftex.def)             Requested size: 184.3758pt x 70.36922pt.
-
-Overfull \vbox (6.70059pt too high) detected at line 99
- []
-
-[5
-
- <./img/vector_zu_rechts.png> <./img/vector_kurve.png>]
-<./img/Y-Yeet.png, id=267, 289.08pt x 162.6075pt>
-File: ./img/Y-Yeet.png Graphic file (type png)
-<use ./img/Y-Yeet.png>
-Package pdftex.def Info: ./img/Y-Yeet.png  used on input line 117.
-(pdftex.def)             Requested size: 153.64493pt x 86.42471pt.
- [6
-
- <./img/Y-Yeet.png>]
-<./img/mittellinie.png, id=303, 216.81pt x 162.6075pt>
-File: ./img/mittellinie.png Graphic file (type png)
-<use ./img/mittellinie.png>
-Package pdftex.def Info: ./img/mittellinie.png  used on input line 133.
-(pdftex.def)             Requested size: 153.64493pt x 115.23874pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 133
-.
  (/home/max/.miktex/texmfs/install/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 133
-.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 71.
+
 
 (/home/max/.miktex/texmfs/install/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
-ut line 133.
+ut line 71.
 
 (/home/max/.miktex/texmfs/install/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
 )
-[7
+[3
+
+]
+<./img/mittellinie.png, id=195, 216.81pt x 162.6075pt>
+File: ./img/mittellinie.png Graphic file (type png)
+<use ./img/mittellinie.png>
+Package pdftex.def Info: ./img/mittellinie.png  used on input line 87.
+(pdftex.def)             Requested size: 153.64493pt x 115.23874pt.
+ [4
 
  <./img/mittellinie.png>]
-<./img/roi_breite.png, id=340, 108.405pt x 79.497pt>
+<./img/roi_breite.png, id=230, 108.405pt x 79.497pt>
 File: ./img/roi_breite.png Graphic file (type png)
 <use ./img/roi_breite.png>
-Package pdftex.def Info: ./img/roi_breite.png  used on input line 154.
+Package pdftex.def Info: ./img/roi_breite.png  used on input line 108.
 (pdftex.def)             Requested size: 122.91406pt x 90.14108pt.
 
-Overfull \vbox (3.50967pt too high) detected at line 154
+Overfull \vbox (3.50967pt too high) detected at line 108
  []
 
-[8
+[5
 
  <./img/roi_breite.png>]
-<./img/longneck.jpg, id=376, 803.0pt x 451.6875pt>
+<./img/longneck.jpg, id=267, 803.0pt x 451.6875pt>
 File: ./img/longneck.jpg Graphic file (type jpg)
 <use ./img/longneck.jpg>
-Package pdftex.def Info: ./img/longneck.jpg  used on input line 170.
+Package pdftex.def Info: ./img/longneck.jpg  used on input line 124.
 (pdftex.def)             Requested size: 153.64493pt x 86.42113pt.
- [9
+ [6
 
  <./img/longneck.jpg>]
-<./img/topdown _view.png, id=410, 1926.19624pt x 422.57875pt>
+<./img/topdown _view.png, id=302, 1926.19624pt x 422.57875pt>
 File: ./img/topdown _view.png Graphic file (type png)
 <use ./img/topdown _view.png>
-Package pdftex.def Info: ./img/topdown _view.png  used on input line 189.
+Package pdftex.def Info: ./img/topdown _view.png  used on input line 143.
 (pdftex.def)             Requested size: 307.28987pt x 67.41408pt.
- [10
+ [7
 
- <./img/topdown _view.png>]
-<./img/tof_sensoren.png, id=445, 517.18219pt x 486.31688pt>
+ <./img/topdown _view.png>] [8
+
+]
+<./img/neuer_ansatz.png, id=370, 798.73407pt x 462.97969pt>
+File: ./img/neuer_ansatz.png Graphic file (type png)
+<use ./img/neuer_ansatz.png>
+Package pdftex.def Info: ./img/neuer_ansatz.png  used on input line 172.
+(pdftex.def)             Requested size: 153.64493pt x 89.05498pt.
+ [9
+
+ <./img/neuer_ansatz.png (PNG copy)>]
+<./img/tof_sensoren.png, id=404, 517.18219pt x 486.31688pt>
 File: ./img/tof_sensoren.png Graphic file (type png)
 <use ./img/tof_sensoren.png>
-Package pdftex.def Info: ./img/tof_sensoren.png  used on input line 210.
+Package pdftex.def Info: ./img/tof_sensoren.png  used on input line 192.
 (pdftex.def)             Requested size: 153.64493pt x 144.47144pt.
 
 pdfTeX warning (ext4): destination with the same identifier (name{fig:topdown})
  has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.210 ^^I\end{frame}
+l.192 ^^I\end{frame}
                     
-Overfull \vbox (16.82474pt too high) detected at line 210
+Overfull \vbox (16.82474pt too high) detected at line 192
  []
 
-[11
+[10
 
  <./img/tof_sensoren.png (PNG copy)>]
-<./img/ueberholen.png, id=478, 803.0pt x 602.25pt>
+<./img/ueberholen.png, id=437, 803.0pt x 602.25pt>
 File: ./img/ueberholen.png Graphic file (type png)
 <use ./img/ueberholen.png>
-Package pdftex.def Info: ./img/ueberholen.png  used on input line 229.
+Package pdftex.def Info: ./img/ueberholen.png  used on input line 211.
 (pdftex.def)             Requested size: 153.64493pt x 115.22818pt.
 
 pdfTeX warning (ext4): destination with the same identifier (name{fig:topdown})
  has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.229 ^^I\end{frame}
-                     [12
+l.211 ^^I\end{frame}
+                     [11
 
- <./img/ueberholen.png>] [13
+ <./img/ueberholen.png>] [12
 
-] [14
+] [13
 
 ]
-<./img/Parken.png, id=576, 462.528pt x 260.172pt>
+<./img/Parken.png, id=535, 462.528pt x 260.172pt>
 File: ./img/Parken.png Graphic file (type png)
 <use ./img/Parken.png>
-Package pdftex.def Info: ./img/Parken.png  used on input line 271.
+Package pdftex.def Info: ./img/Parken.png  used on input line 253.
 (pdftex.def)             Requested size: 245.83282pt x 138.28351pt.
- [15
+ [14
 
  <./img/Parken.png>]
-<./img/Parken2.png, id=610, 462.528pt x 260.172pt>
+<./img/Parken2.png, id=569, 462.528pt x 260.172pt>
 File: ./img/Parken2.png Graphic file (type png)
 <use ./img/Parken2.png>
-Package pdftex.def Info: ./img/Parken2.png  used on input line 290.
+Package pdftex.def Info: ./img/Parken2.png  used on input line 273.
 (pdftex.def)             Requested size: 184.3758pt x 103.71362pt.
- [16
+ [15
 
- <./img/Parken2.png>] [17
+ <./img/Parken2.png>] [16
 
-] [18
+] [17
 
 ]
 \tf@nav=\write6
@@ -1117,14 +1089,14 @@ Package pdftex.def Info: ./img/Parken2.png  used on input line 290.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `AF.out' has not changed.
-(rerunfilecheck)             Checksum: C69A8D0D1B8C74CF9334574B708D6D95;1768.
+(rerunfilecheck)             Checksum: 28C9DB1570AF71889DC8FAB74F2CC790;1750.
  ) 
 Here is how much of TeX's memory you used:
- 23358 strings out of 478615
- 458634 string characters out of 2848820
- 727926 words of memory out of 3000000
- 40945 multiletter control sequences out of 15000+600000
- 476420 words of font info for 54 fonts, out of 8000000 for 9000
+ 23340 strings out of 478615
+ 458058 string characters out of 2848820
+ 727757 words of memory out of 3000000
+ 40935 multiletter control sequences out of 15000+600000
+ 479909 words of font info for 67 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,20n,122p,408b,691s stack positions out of 10000i,1000n,20000p,200000b,80000s
 </home/max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -1133,9 +1105,9 @@ me/max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss12.pfb></home/
 max/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss8.pfb></home/max/
 .miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmssi8.pfb></home/max/.mi
 ktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on AF.pdf (18 pages, 3487707 bytes).
+Output written on AF.pdf (17 pages, 2911201 bytes).
 PDF statistics:
- 743 PDF objects out of 1000 (max. 8388607)
- 60 named destinations out of 1000 (max. 500000)
- 237 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 701 PDF objects out of 1000 (max. 8388607)
+ 54 named destinations out of 1000 (max. 500000)
+ 217 words of extra memory for PDF output out of 10000 (max. 10000000)
 
