@@ -198,7 +198,7 @@
       <sensor type="ray" name="lidar_sensor_${idx}">
         <pose>0 0 0 0 0 0</pose>
         <visualize>true</visualize>
-        <update_rate>5</update_rate>
+        <update_rate>15</update_rate>
         <ray>
           <scan>
             <horizontal>
@@ -244,7 +244,7 @@
       <sensor type="ray" name="lidar_sensor_${idx}">
         <pose>0 0 0 0 0 0</pose>
         <visualize>true</visualize>
-        <update_rate>5</update_rate>
+        <update_rate>15</update_rate>
         <ray>
           <scan>
             <horizontal>

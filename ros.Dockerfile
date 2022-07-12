@@ -3,6 +3,8 @@ ARG ROS_DISTRO=foxy
 FROM ros:${ROS_DISTRO}-ros-base
 
 RUN adduser --gecos '' --disabled-password user
+RUN groupadd -g 1001 -o user
+RUN useradd -m -u 1001 -g 1001 -o -s /bin/bash user
 RUN groupadd wheel
 RUN groupadd render
 RUN usermod -a -G dialout,render,video,wheel,sudo user
