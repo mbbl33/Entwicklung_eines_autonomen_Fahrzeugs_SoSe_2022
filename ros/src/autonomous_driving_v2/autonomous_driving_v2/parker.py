@@ -17,7 +17,7 @@ class Parker(Node):
         self.current_parking_phase = 0
         self.right_lane_free = True
         self.right_box_found = False
-        self.reverse_speed = -0.5  # TO BE CHANGED - VELOCITY CONTROL
+        self.reverse_speed = -0.4  # TO BE CHANGED - VELOCITY CONTROL
         self.general_speed = 1.0  # TO BE CHANGED - VELOCITY CONTROL
         self.speed = 0
         self.back_distance = 10.0
@@ -106,8 +106,7 @@ class Parker(Node):
                 self.current_parking_phase = 2
         # Phase 2 - steering into the parking spot
         elif self.current_parking_phase == 2:
-            time.sleep(0.4)
-            self.change_lane(25.0, 1, self.reverse_speed)
+            self.change_lane(25.0, 0.95, self.reverse_speed)
             print("---SET CURRENT PHASE TO 2---")
             self.current_parking_phase = 3
         # Phase 3 - closing in on parked car and stopping
@@ -124,11 +123,9 @@ class Parker(Node):
             speed.data = self.general_speed
             self.pub_speed.publish(speed)
             time.sleep(0.2)
-            self.change_lane(-25.0, 1, self.general_speed)
+            self.change_lane(-25.0, 0.95, self.general_speed)
             print("---PARKING COMPLETE---")
-            speed = Float64()
-            speed.data = 2.0
-            self.pub_speed.publish(speed)
+
             self.next_lap_prep()
             print("---VARIABLES RESET FOR NEXT LAP---")
 
@@ -139,14 +136,15 @@ class Parker(Node):
         # Unblock overtaker and lbs and velocity_controller
         block = Bool()
         block.data = False
-        self.pub_block_overtaker.publish(block)
         self.pub_block_lbs.publish(block)
         self.pub_block_velocity_controller.publish(block)
+        time.sleep(4)
+        self.pub_block_overtaker.publish(block)
         # Reset phases
         self.current_parking_phase = 0
         self.current_scan_phase = 0
         # Wait a bit to unblock scan
-        time.sleep(20)
+        time.sleep(18)
         self.scan_blocked = False
 
     def change_lane(self, starting_angle, correction_factor, speed):
