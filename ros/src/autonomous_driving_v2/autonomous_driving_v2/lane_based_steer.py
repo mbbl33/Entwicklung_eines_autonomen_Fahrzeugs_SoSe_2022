@@ -56,9 +56,11 @@ class LaneBasedSteer(Node):
         # simple steering
         self.pub_steering = self.create_publisher(Float64, '/steering', 1)
 
+        # for lane_change in overtaker
         self.sub_lane_data = self.create_subscription(Int64MultiArray, 'lane_data', self.update_lane_data, 1)
         self.sub_driveway_factor = self.create_subscription(Float64, 'driveway_factor', self.update_driveway_factor, 1)
 
+        # for early box detection in parker
         self.pub_parking_box_detect = self.create_publisher(Bool, 'early_box_detection', 1)
 
     def update_blocked(self, msg_in):
@@ -135,11 +137,7 @@ class LaneBasedSteer(Node):
 
         self.calc_driveway_points()
 
-        # plt.imshow(img_croped)
-        # plt.show()
-
         if (self.debug):
-            # img_cv_all_lines = self.debug_draw_lines(img_croped, vectors_r, vectors_l, mid_of_lines, drive_way)
             img_cv_all_lines = self.debug_draw_circles(img_croped, self.top_line, self.bottom_line)
             msg_out = ImgConverter.get_ros_img(img_cv_all_lines)
             self.pub_lane_img.publish(msg_out)

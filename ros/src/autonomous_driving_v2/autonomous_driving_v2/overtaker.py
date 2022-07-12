@@ -46,6 +46,9 @@ class Overtaker(Node):
         self.sub_speed = self.create_subscription(Float64, '/speed', self.get_current_speed, 1)
         self.pub_steering = self.create_publisher(Float64, '/steering', 1)
 
+        self.pub_overtaking_pass = self.create_publisher(Bool, 'overtaking_done', 1)
+
+
     def update_self_blocked(self, msg_in):
         self.blocked = msg_in.data
 
@@ -107,6 +110,10 @@ class Overtaker(Node):
             speed_out = Float64()
             speed_out.data = 2.0
             self.pub_speed.publish(speed_out)
+            # Tell velocity control about end
+            passed = Bool()
+            passed.data = True
+            self.pub_overtaking_pass.publish(passed)
             self.current_phase = 0 # reset for next lap
 
         else:

@@ -45,13 +45,9 @@ class ImgConverter:
 
         threshold = 45  # at what grey level  a pixel should become white
         white = 255
-        # return is a tuple => first value ignored
-        (thresh, bw_img) = cv2.threshold(gray_img, threshold, white, cv2.THRESH_BINARY)
+        (thresh, bw_img) = cv2.threshold(gray_img, threshold, white, cv2.THRESH_BINARY)  # return is a tuple => first value ignored
 
         outer_lines_img = cv2.bitwise_not(outer_lines_mask, bw_img)
-
-        # plt.imshow(outer_lines_img)
-        # plt.show()
 
         return outer_lines_img
 

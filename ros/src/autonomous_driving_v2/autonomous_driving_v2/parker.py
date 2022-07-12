@@ -17,8 +17,8 @@ class Parker(Node):
         self.current_parking_phase = 0
         self.right_lane_free = True
         self.right_box_found = False
-        self.reverse_speed = -0.4  # TO BE CHANGED - VELOCITY CONTROL
-        self.general_speed = 1.0  # TO BE CHANGED - VELOCITY CONTROL
+        self.reverse_speed = -0.4
+        self.general_speed = 1.0
         self.speed = 0
         self.back_distance = 10.0
 
@@ -40,6 +40,8 @@ class Parker(Node):
         self.pub_steering = self.create_publisher(Float64, '/steering', 1)
 
         self.sub_box_detect = self.create_subscription(Bool, 'early_box_detection', self.find_second_box, 1)
+
+        self.pub_parking_pass = self.create_publisher(Bool, 'parking_done', 1)
 
 
     def update_self_blocked(self, msg_in):
@@ -140,6 +142,10 @@ class Parker(Node):
         self.pub_block_velocity_controller.publish(block)
         time.sleep(4)
         self.pub_block_overtaker.publish(block)
+        # Tell velocity control about end
+        passed = Bool()
+        passed.data = True
+        self.pub_parking_pass.publish(passed)
         # Reset phases
         self.current_parking_phase = 0
         self.current_scan_phase = 0
